@@ -1,0 +1,106 @@
+#System Info
+project_path : /home/zhouxin/Github/EdgeVO/
+output_path : /home/zhouxin/Github/EdgeVO/output/track.txt
+
+#Image Dataset Info
+#rgbd_dataset_freiburg1_desk/rgbd_dataset_freiburg1_xyz
+image_dataset_path : /home/zhouxin/Dataset/TUM/rgbd_dataset_freiburg1_xyz/
+image_dataset_info_path : /home/zhouxin/Dataset/TUM/rgbd_dataset_freiburg1_xyz/associate.txt
+image_depth_scale : 5000 #to meters
+#the depth range is of significance when choosing different dataset
+image_depth_min : 0.1
+image_depth_max : 5.2 #the depth limit could reduce the failure when the image is bad
+image_width: 640
+image_height: 480
+image_border_size : 3
+
+
+# Camera calibration and distortion parameters (OpenCV)
+pyramid_level : 3
+pyramid_factor : 2.0
+IntrinsicsCamFx: 517.30640
+IntrinsicsCamFy: 516.469215
+IntrinsicsCamCx: 318.643040
+IntrinsicsCamCy: 255.313989
+IntrinsicsCamK1: 0.262383
+IntrinsicsCamK2: -0.953104
+IntrinsicsCamP1: -0.005358
+IntrinsicsCamP2: 0.002628
+IntrinsicsCamK3: 1.163314
+
+#Frame Info
+cannythreshold_low : 60
+cannythreshold_high : 80
+edge_patch_num : 20
+use_edge_balance : true
+
+#System Info
+initialize_min_num : 5
+
+
+#Track info
+track_max_error_after_track : 3
+track_iters : 150
+track_solver_time : 0.005
+track_huber_weight : 0.3
+track_parallax_error : 10  #(threshold pixels)
+track_error_filter :
+  lvl0 : 30
+  lvl1 : 20
+  lvl2 : 10
+track_edge_least_num :
+  lvl0 : 100
+  lvl1 : 100
+  lvl2 : 100
+
+track_edge_most_num :
+  lvl0 : 50000
+  lvl1 : 50000
+  lvl2 : 50000
+
+#Local Mapper Info
+lm_enable : false
+lm_min_kf_num : 5
+lm_max_kf_num : 10
+lm_max_range : 20
+lm_good_edge_dt_threshold : 5.0
+lm_good_edge_distancemap_threshold : 7.0
+lm_marge_size : 1
+lm_feature_size : 100000
+lm_edge_observation_threshold : 3
+
+#loop
+loop_min_kf_distance : 7  #we only check loop when the kfId is bigger than,and we only check the loop further
+loop_min_similirity : 0.3   #the threshold to decide whether check loop
+loop_min_similirity_for_newDB : 0.2 # the threshold to decide whether add new keyframe
+loop_min_between_distance : 15  #the distcance between two distance
+loop_min_lastN_distance : 7  #the distance the candidate loop and the newestframe
+loop_min_newdb_forloop_distance : 10 #the distance for the newdb created because for loop
+loop_quality_check_range : 5
+loop_histogram_dis : 1.5
+loop_graph_constraint_num : 3
+loop_only_fernkf_for_lm_constraint : true
+loop_loop_constraint_weight : 3
+loop_debug : true
+
+#relocalisation
+rl_remove_n_num : 10
+rl_min_kf_num : 20
+
+#Fern DataBase Info
+fern_enable : false
+fern_database_maxnum : 100
+fern_code_num : 500
+fern_level : 4
+fern_num_prefern : 5
+fern_similarity_threshold : 0.05
+fern_use_depth : true
+fern_use_dt : true  #whether use depth an dt also influence the fern_num_prefern
+
+
+
+
+
+
+
+
