@@ -26,8 +26,6 @@ namespace EdgeVO{
         void Close();
     private:
         void ThreadLoop();
-        void ThreadLoopTrajectory();
-        void DrawFrame(Frame::Ptr frame, const float* color);
         void DrawTrajectory();
 
         void DrawKeyFrames();
@@ -35,8 +33,7 @@ namespace EdgeVO{
         cv::Mat PlotFrameImage();
 
         std::vector<Vec3, Eigen::aligned_allocator<Vec3>> Translations_;
-        std::vector<bool> InDB_;
-        std::vector<bool> IsKeyFrame_;
+
         std::vector<Frame::Ptr> ActiveKeyFrames_;
         Frame::Ptr CurrentFrame_ = nullptr;
         std::thread ViewerThread_;

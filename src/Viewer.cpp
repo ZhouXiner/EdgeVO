@@ -23,16 +23,6 @@ namespace EdgeVO{
         SE3 Twc = CurrentFrame_->Tcw_.inverse();
         Vec3 translation = Twc.translation();
         Translations_.push_back(translation);
-        if(CurrentFrame_->IsInDB()){
-            InDB_.push_back(true);
-        }else{
-            InDB_.push_back(false);
-        }
-        if(CurrentFrame_->IsKeyFrame_){
-            IsKeyFrame_.push_back(true);
-        }else{
-            IsKeyFrame_.push_back(false);
-        }
     }
 
     void Viewer::ThreadLoop() {
@@ -50,9 +40,6 @@ namespace EdgeVO{
                 pangolin::CreateDisplay()
                         .SetBounds(0.0, 1.0, 0, 1.0, -640.0f / 480.0f)
                         .SetHandler(new pangolin::Handler3D(vis_camera));
-
-        const float blue[3] = {0, 0, 1};
-        const float green[3] = {0, 1, 0};
 
         while (!pangolin::ShouldQuit() && ViewerRunning_) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -79,96 +66,30 @@ namespace EdgeVO{
     }
 
     cv::Mat Viewer::PlotFrameImage() {
-        cv::Mat img_out = CurrentFrame_->GrayImgs_[0];
+        cv::Mat img_out = CurrentFrame_->RGBImgs_[0];
         int edge_size = CurrentFrame_->EdgePixels_[0].size();
-        cv::putText(img_out,std::to_string(CurrentFrame_->Id_),cv::Point(100,100),1,1,cv::Scalar(255,0,0),2);
+        cv::putText(img_out,std::to_string(CurrentFrame_->Id_),cv::Point(100,100),1,3,cv::Scalar(255,0,0),2);
         for (auto &pixel:CurrentFrame_->EdgePixels_[0]) {
             Vec2 position = pixel->ReturnPixelPosition();
                 cv::circle(img_out, cv::Point2f(position[0],position[1]), 2, cv::Scalar(0, 250, 0),
-                           2);
+                           1);
         }
         return img_out;
     }
 
-    void Viewer::FollowCurrentFrame(pangolin::OpenGlRenderState& vis_camera) {
-        SE3 Twc = CurrentFrame_->Tcw_.inverse();
-        pangolin::OpenGlMatrix m(Twc.matrix());
-        vis_camera.Follow(m, true);
-    }
-
     void Viewer::DrawTrajectory() {
-
         for (size_t i = 0; i < ActiveKeyFrames_.size() - 1; i++) {
-
-            if(InDB_[i]){
-                glColor3f(1.0, 0.0, 0.0);
-            }else{
-                glColor3f(0.0, 0.0, 0.0);
-            }
-            if(IsKeyFrame_[i]){
-                glLineWidth(4);
-            }else{
-                glLineWidth(2);
-            }
             glBegin(GL_LINES);
+            glLineWidth(3);
+            glColor3f(0.0, 0.0, 0.0);
             Vec3 p1 = ActiveKeyFrames_[i]->Tcw_.inverse().translation();
             Vec3 p2 = ActiveKeyFrames_[i+1]->Tcw_.inverse().translation();
             glVertex3d(p1[0], p1[1], p1[2]);
             glVertex3d(p2[0], p2[1], p2[2]);
-
             glEnd();
         }
 
     }
-
-    void Viewer::DrawFrame(Frame::Ptr frame, const float* color) {
-        SE3 Twc = frame->Tcw_.inverse();
-        const float sz = 1.0;
-        const int line_width = 2.0;
-        const float fx = 517.30640;
-        const float fy = 516.469215;
-        const float cx = 318.643040;
-        const float cy = 255.313989;
-        const float width = 640;
-        const float height = 480;
-
-        glPushMatrix();
-
-        Sophus::Matrix4f m = Twc.matrix().template cast<float>();
-        glMultMatrixf((GLfloat*)m.data());
-
-        if (color == nullptr) {
-            glColor3f(1, 0, 0);
-        } else
-            glColor3f(color[0], color[1], color[2]);
-
-        glLineWidth(line_width);
-        glBegin(GL_LINES);
-        glVertex3f(0, 0, 0);
-        glVertex3f(sz * (0 - cx) / fx, sz * (0 - cy) / fy, sz);
-        glVertex3f(0, 0, 0);
-        glVertex3f(sz * (0 - cx) / fx, sz * (height - 1 - cy) / fy, sz);
-        glVertex3f(0, 0, 0);
-        glVertex3f(sz * (width - 1 - cx) / fx, sz * (height - 1 - cy) / fy, sz);
-        glVertex3f(0, 0, 0);
-        glVertex3f(sz * (width - 1 - cx) / fx, sz * (0 - cy) / fy, sz);
-
-        glVertex3f(sz * (width - 1 - cx) / fx, sz * (0 - cy) / fy, sz);
-        glVertex3f(sz * (width - 1 - cx) / fx, sz * (height - 1 - cy) / fy, sz);
-
-        glVertex3f(sz * (width - 1 - cx) / fx, sz * (height - 1 - cy) / fy, sz);
-        glVertex3f(sz * (0 - cx) / fx, sz * (height - 1 - cy) / fy, sz);
-
-        glVertex3f(sz * (0 - cx) / fx, sz * (height - 1 - cy) / fy, sz);
-        glVertex3f(sz * (0 - cx) / fx, sz * (0 - cy) / fy, sz);
-
-        glVertex3f(sz * (0 - cx) / fx, sz * (0 - cy) / fy, sz);
-        glVertex3f(sz * (width - 1 - cx) / fx, sz * (0 - cy) / fy, sz);
-
-        glEnd();
-        glPopMatrix();
-    }
-
 }
 
 

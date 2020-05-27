@@ -58,22 +58,6 @@ namespace EdgeVO{
         IsActive_ = false;
     }
 
-    void FrameDataset::GetBound(cv::Mat& dtImg,cv::Mat& depthImg) {
-        if(ImageConfig_->FernUseDepth_){
-            double DepthMinBound,DepthMaxBound;
-            minMaxLoc(depthImg,&DepthMinBound,&DepthMaxBound,0,0);
-            //std::cout << " max depth: " << DepthMaxBound << std::endl;
-            if(static_cast<float>(DepthMinBound) < DepthBound_[0]) DepthBound_[0] = static_cast<float>(DepthMinBound);
-            if(static_cast<float>(DepthMaxBound) > DepthBound_[1]) DepthBound_[1] = static_cast<float>(DepthMaxBound);
-        }
-        if(ImageConfig_->FernUseDT_){
-            double DTMinBound,DTMaxBound;
-            minMaxLoc(dtImg,&DTMinBound,&DTMaxBound,0,0);
-
-            if(static_cast<float>(DTMinBound) < DTBound_[0]) DTBound_[0] = static_cast<float>(DTMinBound);
-            if(static_cast<float>(DTMaxBound) > DTBound_[1]) DTBound_[1] = static_cast<float>(DTMaxBound);
-        }
-    }
     Frame::Ptr FrameDataset::GetNewestFrame() {
         std::lock_guard<std::mutex> lock(FrameQueueLock_);
         if(FramesList_.empty()){

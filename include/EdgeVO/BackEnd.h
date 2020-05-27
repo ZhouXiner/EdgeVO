@@ -4,10 +4,11 @@
 
 #ifndef EDGEVO_BACKEND_H
 #define EDGEVO_BACKEND_H
-#include "CommonInclude.h"
-#include "Camera.h"
-#include "Config.h"
-#include "Frame.h"
+
+#include "EdgeVO/CommonInclude.h"
+#include "EdgeVO/Camera.h"
+#include "EdgeVO/Config.h"
+#include "EdgeVO/Frame.h"
 
 
 ///combine the local mapper, loop and graph optimization here
@@ -20,7 +21,7 @@ namespace EdgeVO{
         BackEnd(SystemConfig::Ptr system,CameraConfig::Ptr camera);
 
         ///input part
-        void AddNewestKeyFrame(Frame::Ptr& newestKF,bool checkloop = true);
+        void AddNewestKeyFrame(Frame::Ptr& newestKF);
         void AddNewestFrame(Frame::Ptr& frame);
 
         ///reset

@@ -79,9 +79,7 @@ namespace EdgeVO{
         void ReprojectError(const Frame::Ptr& target_frame,const Frame::Ptr& host_frame,const SE3& initialize_pose);
         double TrackAverageError(const Frame::Ptr& target_frame,const Frame::Ptr& host_frame,const SE3& initialize_pose);
         double TrackAverageErrorLvl(const Frame::Ptr& target_frame,const Frame::Ptr& host_frame,const SE3& initialize_pose,int lvl);
-        double TrackAverageErrorForLoop(const Frame::Ptr& target_frame,const Frame::Ptr& host_frame,const SE3& initialize_pose,BufferInfo& residual_info);
         Vec3 InterpolateDTdxdy(const Vec2 Puv,const Vec3* DTInfo,int lvl);
-        double GetTDistributionWeight(double e,double theta);
         std::vector<SE3> TheLastTryPoses(std::vector<SE3> tryPoses);
         void DebugError(double e);
 

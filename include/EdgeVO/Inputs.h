@@ -22,14 +22,9 @@ namespace EdgeVO{
         bool IsActive();
         void ReadImages();
         Frame::Ptr GetNewestFrame();
-        void GetBound(cv::Mat& dtImg,cv::Mat& depthImg); //{low,high}
 
-        //std::vector<Frame::Ptr> FramesVec_;
-        std::queue<Frame::Ptr> FramesQueue_;
         std::list<Frame::Ptr> FramesList_;
         int ImgCount_;
-        Vec2f DepthBound_ = Vec2f(9999,-1);
-        Vec2f DTBound_ = Vec2f(9999,-1);
 
 
     private:

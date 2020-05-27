@@ -17,14 +17,14 @@ Eigen/Dense
 -
 
 ../include/EdgeVO/BackEnd.h
-CommonInclude.h
-../include/EdgeVO/CommonInclude.h
-Camera.h
-../include/EdgeVO/Camera.h
-Config.h
-../include/EdgeVO/Config.h
-Frame.h
-../include/EdgeVO/Frame.h
+EdgeVO/CommonInclude.h
+../include/EdgeVO/EdgeVO/CommonInclude.h
+EdgeVO/Camera.h
+../include/EdgeVO/EdgeVO/Camera.h
+EdgeVO/Config.h
+../include/EdgeVO/EdgeVO/Config.h
+EdgeVO/Frame.h
+../include/EdgeVO/EdgeVO/Frame.h
 
 ../include/EdgeVO/Camera.h
 EdgeVO/CommonInclude.h

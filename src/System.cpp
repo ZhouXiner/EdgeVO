@@ -10,6 +10,7 @@ namespace EdgeVO{
         CameraConfig_ = std::make_shared<CameraConfig>(SystemConfig_); /**For the Frame Tracking*/
         mFrameDataset_ = std::make_unique<FrameDataset>(SystemConfig_,CameraConfig_);
         mTracker_ = std::make_unique<Tracker>(SystemConfig_,CameraConfig_);
+        mBackEnd_ = std::make_shared<BackEnd>(SystemConfig_,CameraConfig_);
         mViewer_ = std::make_unique<Viewer>();
        // mViewer_->SetMap(mLocalMapper_);
         //TrackOut_.open(SystemConfig_->OutputPath_,std::ofstream::out);
@@ -22,7 +23,7 @@ namespace EdgeVO{
             //auto t1=std::chrono::steady_clock::now();
 
 
-            auto NewestFrame = mFrameDataset_->GetNewestFrame();
+            Frame::Ptr NewestFrame = mFrameDataset_->GetNewestFrame();
 
             if(NewestFrame == nullptr){
                 std::this_thread::sleep_for(std::chrono::microseconds(5));
@@ -55,9 +56,8 @@ namespace EdgeVO{
         //std::cout << "traking start" << std::endl;
         switch(mSystemStatus_){
             case SystemStatus::Init :{
-                std::cout << "ok1" << std::endl;
+
                 mBackEnd_->AddNewestKeyFrame(newestFrame);
-                std::cout << "ok" << std::endl;
                 mSystemStatus_ = SystemStatus::Tracking;
                 break;
             }

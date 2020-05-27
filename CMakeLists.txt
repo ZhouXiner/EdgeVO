@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.2)
 project(EdgeVO)
 
 set(CMAKE_CXX_STANDARD 14)
-SET(CMAKE_BUILD_TYPE debug)
+SET(CMAKE_BUILD_TYPE release)
 SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb")
 SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 
@@ -41,7 +41,7 @@ set(THIRD_LIBS
         pthread
         ${CSPARSE_LIBRARY})
 
-set(UTILITY_HEADER_FILES "Utils/LGSX.h" "Utils/Utility.h" include/EdgeVO/Config.h)
+set(UTILITY_HEADER_FILES "Utils/LGSX.h" "Utils/Utility.h")
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 

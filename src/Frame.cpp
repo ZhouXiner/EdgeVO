@@ -10,7 +10,6 @@ namespace EdgeVO{
     Frame::Frame(const SystemConfig::Ptr system_config,const CameraConfig::Ptr camera) {
         FrameConfig_ = system_config;
         CameraConfig_ = camera;
-        FernCode_ = (char*)malloc(sizeof(char) * (FrameConfig_->FernCodeNum_));
     }
 
     void Frame::Initialize(const cv::Mat &rgbImg, const cv::Mat &depthImg, const double rgbStamp, const double depthStamp) {
@@ -29,17 +28,16 @@ namespace EdgeVO{
     }
 
 
-    void Frame::GetEdge(cv::Mat &CannyImg, const cv::Mat &GrayImg) {
+    void Frame::GetEdge(cv::Mat &EdgeImg, const cv::Mat &GrayImg) {
         GaussianBlur(GrayImg,GrayImg,cv::Size(3,3),2);
-        cv::Canny(GrayImg,CannyImg,FrameConfig_->CannyThresholdL_,FrameConfig_->CannyThresholdH_,3);
+        cv::Canny(GrayImg,EdgeImg,FrameConfig_->CannyThresholdL_,FrameConfig_->CannyThresholdH_,3);
     }
 
-    void Frame::GetDT(cv::Mat &DTImg, const cv::Mat &cannyImg) {
-        cv::distanceTransform(255 - cannyImg,DTImg,CV_DIST_L2,CV_DIST_MASK_PRECISE);
+    void Frame::GetDT(cv::Mat &DTImg, const cv::Mat &EdgeImg) {
+        cv::distanceTransform(255 - EdgeImg,DTImg,CV_DIST_L2,CV_DIST_MASK_PRECISE);
     }
 
     void Frame::GetPyramidImgs() {
-
         for(size_t lvl = 0;lvl < CameraConfig_->PyramidLevel_;++lvl){
             RGBImgs_.push_back(cv::Mat(CameraConfig_->SizeH_[lvl],CameraConfig_->SizeW_[lvl],CV_8UC3));
             DepthImgs_.push_back(cv::Mat(CameraConfig_->SizeH_[lvl],CameraConfig_->SizeW_[lvl],CV_32FC1));
@@ -79,8 +77,6 @@ namespace EdgeVO{
 
             Vec3* PyramidDTLvl = PyramidDT_[lvl];
 
-            //const float* DTdata = reinterpret_cast<float*>(DTImgs_[lvl].data);
-
             for(int col = 0;col < Lvlw;++col){
                 for(int row = 0;row < Lvlh;++row){
                     auto idx = col + row*Lvlw;
@@ -94,10 +90,6 @@ namespace EdgeVO{
 
                         PyramidDTLvl[idx][2] = (-DTImgs_[lvl].at<float>(row + 1,col - 1) - 2*DTImgs_[lvl].at<float>(row + 1,col) - DTImgs_[lvl].at<float>(row + 1,col + 1)
                                              + DTImgs_[lvl].at<float>(row - 1,col - 1) + 2*DTImgs_[lvl].at<float>(row - 1,col) + DTImgs_[lvl].at<float>(row - 1,col + 1)) / 8;
-
-                        //PyramidDTLvl[idx][1] = (-DTImgs_[lvl].at<float>(row ,col + 1) + DTImgs_[lvl].at<float>(row,col - 1)) / 2;
-                        //PyramidDTLvl[idx][2] = (-DTImgs_[lvl].at<float>(row + 1,col) + DTImgs_[lvl].at<float>(row - 1,col)) / 2;
-                         //std::cout << "dt: " << PyramidDTLvl[idx][0] << " dx: " << PyramidDTLvl[idx][1] << " dy: " << PyramidDTLvl[idx][0] << std::endl;
                     }
                 }
             }
@@ -205,22 +197,6 @@ namespace EdgeVO{
         cv::waitKey(0);
     }
 
-    void Frame::GetFernCode() {
-        FernCode_ = new char[FrameConfig_->FernCodeNum_];
-    }
-
-    cv::Mat Frame::Undistort(cv::Mat distorted_map) {
-        cv::Mat discoff = (cv::Mat_<double>(1,5) << CameraConfig_->Distort_[0],CameraConfig_->Distort_[1],
-                       CameraConfig_->Distort_[2],CameraConfig_->Distort_[3],CameraConfig_->Distort_[4]);
-
-        cv::Mat K = (cv::Mat_<double>(3,3) << CameraConfig_->Fx_[0],0,CameraConfig_->Cx_[0],
-                0,CameraConfig_->Fy_[0],CameraConfig_->Cy_[0],
-                0,0,1);
-        cv::Mat undistorted_map;
-        cv::undistort(distorted_map,undistorted_map,K,discoff,cv::noArray());
-
-        return undistorted_map;
-    }
 
     int Frame::ReturnPixelSize() {
         auto size = 0;
@@ -228,10 +204,6 @@ namespace EdgeVO{
             size = size + eachpyramidpixel.size();
         }
         return size;
-    }
-
-    void Frame::AddKFEdgePixels(EdgePixel::Ptr& pixel) {
-        KFEdgePixels_.push_back(pixel);
     }
 
     void Frame::UpdateHostId(int id) {
@@ -299,21 +271,6 @@ namespace EdgeVO{
         }
         return Uncertainsize;
     }
-    char* Frame::ReturnFernCode() {
-        return FernCode_;
-    }
-
-    bool Frame::IsInDB() {
-        return InDB_;
-    }
-
-    bool Frame::IsInLoop() {
-        return InLoop_;
-    }
-    bool Frame::IsInDBorLoop() {
-        return InDB_ || InLoop_;
-    }
-
 }
 
 

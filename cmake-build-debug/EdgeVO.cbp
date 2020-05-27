@@ -160,9 +160,6 @@
 		<Unit filename="/home/zhouxin/Github/EdgeVO/Utils/Utility.h">
 			<Option target="EdgeVO"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/include/EdgeVO/Config.h">
-			<Option target="EdgeVO"/>
-		</Unit>
 		<Unit filename="/home/zhouxin/Github/EdgeVO/main.cpp">
 			<Option target="EdgeVO"/>
 		</Unit>

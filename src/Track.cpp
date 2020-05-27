@@ -124,55 +124,6 @@ namespace EdgeVO{
         return error / static_cast<double>(goodEdge);
     }
 
-    double Tracker::TrackAverageErrorForLoop(const EdgeVO::Frame::Ptr &target_frame,
-                                             const EdgeVO::Frame::Ptr &host_frame, const SE3 &initialize_pose,
-                                             EdgeVO::BufferInfo &residual_info) {
-        residual_info.Reset();
-        for(size_t lvl = 0;lvl < TrackConifg_->PyramidLevel_;++lvl){
-            for(auto &pixel : host_frame->EdgePixels_[lvl]){
-                Vec2 Puv_host = pixel->ReturnPixelPosition();
-                double depth_host = pixel->Depth_;
-                Vec3 Pxyz_host = CameraConfig_->pixel2camera(Puv_host,depth_host,lvl);
-
-                Mat33 R_t_h = initialize_pose.rotationMatrix();
-                Vec3 T_t_h = initialize_pose.translation();
-                Vec3 Pxyz_target = R_t_h * Pxyz_host + T_t_h;
-                Vec2 Puv_target = CameraConfig_->camera2pixel(Pxyz_target,lvl);
-
-
-                if(Utility::InBorder(Puv_target,CameraConfig_->SizeW_[lvl],CameraConfig_->SizeH_[lvl],CameraConfig_->ImageBound_) && Pxyz_target[2] > 0){
-                    Vec3 dtInfo = InterpolateDTdxdy(Puv_target,target_frame->PyramidDT_[lvl],lvl);
-
-                    if(std::isnan(dtInfo[0]) || std::isnan(dtInfo[1]) || std::isnan(dtInfo[2])){
-                        LOG(ERROR) << "Nan Data!";
-                        exit(0);
-                    }
-
-                    //double e = dtInfo[0] * CameraConfig_->Weight_[lvl];
-
-                    double e = dtInfo[0];
-                    if(TrackConifg_->UseTrackFilter_ && e > TrackConifg_->TrackFilter_[lvl]){
-                        residual_info.BadEdgesNum_++;
-                        continue;
-                    }
-
-                    if(std::isnan(e)){
-                        LOG(ERROR) << "Bad info " << Puv_target << CameraConfig_->SizeW_[lvl] << " " << CameraConfig_->SizeH_[lvl];
-                        exit(0);
-                    }
-                    residual_info.SumError_ = residual_info.SumError_ + e;
-                    residual_info.GoodEdgesNum_++;
-                }
-            }
-        }
-        if(residual_info.GoodEdgesNum_ == 0){
-            LOG(ERROR) << "Init no good edge !" << " host id: " << host_frame->Id_ << " target id: " << target_frame->Id_ << std::endl;
-            return MAXFLOAT;
-        }
-
-        //LOG(INFO) << "Good Size: " << residual_info.GoodEdgesNum_ << std::endl;
-        return residual_info.SumError_ / static_cast<double>(residual_info.GoodEdgesNum_);
-    }
     double Tracker::TrackAverageError(const EdgeVO::Frame::Ptr& target_frame, const EdgeVO::Frame::Ptr& host_frame,
                                       const SE3& initialize_pose) {
         double error = 0;
@@ -196,8 +147,6 @@ namespace EdgeVO{
                         LOG(ERROR) << "Nan Data!";
                         exit(0);
                     }
-
-                    //double e = dtInfo[0] * CameraConfig_->Weight_[lvl];
 
                     double e = dtInfo[0];
                     if(TrackConifg_->UseTrackFilter_ && e > TrackConifg_->TrackFilter_[lvl]){
@@ -312,11 +261,6 @@ namespace EdgeVO{
 
         double e = TrackAverageError(target_frame,host_frame,initialize_pose);
         LOG(INFO) << "Feature Size: " << host_frame->ReturnPixelSize() << " After Track Lost: " << e << " id: " <<  target_frame->Id_ << " tracked in " << host_frame->Id_ << " with Good: " << mBufferInfo_->GoodEdgesNum_ ;
-
-        //if(e > TrackConifg_->TrackMaxError_){
-        //    LOG(INFO) << "bading tracking final error: " << e;
-        //    return TrackerStatus::Lost;
-        //}
 
         return trackStatus_final;
     }
@@ -497,7 +441,6 @@ namespace EdgeVO{
 
         }
 
-        //if(mBufferInfo_->GoodEdgesNum_ < 200) std::cout << "little num " << mBufferInfo_->GoodEdgesNum_ << " " << target_frame->Id_ << std::endl;
         if(mBufferInfo_->GoodEdgesNum_){
             std::sort(ErrorVec.begin(),ErrorVec.end());
             double mid_e = ErrorVec[static_cast<int>(mBufferInfo_->GoodEdgesNum_ / 2)];
@@ -569,28 +512,11 @@ namespace EdgeVO{
                                                      const SE3 &initialize_pose, EdgeVO::Tracker::TrackerStatus status) {
 
         return CheckKeyFrame(target_frame,host_frame,initialize_pose);
-        /*
-        switch(status){
-            case TrackerStatus ::Lost:
-            {
-                ///lost because no update
-                double final_e = TrackAverageError(target_frame,host_frame,initialize_pose);
-                if(final_e < TrackConifg_->TrackMaxError_){
-                    return TrackerStatus::Ok;
-                }
-                LOG(INFO) << "Lost for no update and Lost too big! Id: " << target_frame->Id_ << std::endl;
-                mDebuger_->LostNumAfterCeres_++;
-                return TrackerStatus ::Lost;
-            }
-            case TrackerStatus ::Ok:{
-                return CheckKeyFrame(target_frame,host_frame,initialize_pose);
-            }
-        }
-          */
 }
 
     Tracker::TrackerStatus Tracker::CheckKeyFrame(const EdgeVO::Frame::Ptr& target_frame,const EdgeVO::Frame::Ptr& host_frame,
                                                   const SE3 &initialize_pose) {
+
         double final_e = TrackAverageError(target_frame,host_frame,initialize_pose);
         mDebuger_->AllAfterError_ += final_e;
         DebugError(final_e);

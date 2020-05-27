@@ -9,18 +9,18 @@ namespace EdgeVO{
         BackEndConfig_ = system;
     }
 
-    void BackEnd::AddNewestFrame(EdgeVO::Frame::Ptr &frame) {
+    void BackEnd::AddNewestFrame(Frame::Ptr &frame) {
+        std::lock_guard<std::mutex> lock(KeyFrameMutex_);
         AllFrames_.push_back(frame);
         ++AllFrameNum_;
     }
 
-    void BackEnd::AddNewestKeyFrame(EdgeVO::Frame::Ptr &newestKF,bool checkloop) {
+    void BackEnd::AddNewestKeyFrame(Frame::Ptr &newestKF) {
         if(newestKF == nullptr){
             return;
         }
-        ///Firt add frame
+        ///First add frame
         AddNewestFrame(newestKF);
-        std::cout << "ok add" << std::endl;
         ///Add the newestFrame
         {
             std::lock_guard<std::mutex> lock(KeyFrameMutex_);
