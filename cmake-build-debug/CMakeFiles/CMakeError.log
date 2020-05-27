@@ -1,24 +1,24 @@
 Determining if the pthread_create exist failed with the following output:
-Change Dir: /home/zhouxin/Github/EdgeVO/cmake-build-debug/CMakeFiles/CMakeTmp
+Change Dir: /home/zhouxin/GitHub/EdgeVO/cmake-build-debug/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_35aa4/fast 
-/usr/bin/make -f CMakeFiles/cmTC_35aa4.dir/build.make CMakeFiles/cmTC_35aa4.dir/build
-make[1]: Entering directory '/home/zhouxin/Github/EdgeVO/cmake-build-debug/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_35aa4.dir/CheckSymbolExists.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_35aa4.dir/CheckSymbolExists.c.o   -c /home/zhouxin/Github/EdgeVO/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
-Linking C executable cmTC_35aa4
-/home/zhouxin/Software/clion-2019.2.1/bin/cmake/linux/bin/cmake -E cmake_link_script CMakeFiles/cmTC_35aa4.dir/link.txt --verbose=1
-/usr/bin/cc      -rdynamic CMakeFiles/cmTC_35aa4.dir/CheckSymbolExists.c.o  -o cmTC_35aa4 
-CMakeFiles/cmTC_35aa4.dir/CheckSymbolExists.c.o: In function `main':
+Run Build Command(s):/usr/bin/make cmTC_1878c/fast 
+/usr/bin/make -f CMakeFiles/cmTC_1878c.dir/build.make CMakeFiles/cmTC_1878c.dir/build
+make[1]: Entering directory '/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_1878c.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_1878c.dir/CheckSymbolExists.c.o   -c /home/zhouxin/GitHub/EdgeVO/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_1878c
+/home/zhouxin/Software/clion-2019.2.1/bin/cmake/linux/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1878c.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_1878c.dir/CheckSymbolExists.c.o  -o cmTC_1878c 
+CMakeFiles/cmTC_1878c.dir/CheckSymbolExists.c.o: In function `main':
 CheckSymbolExists.c:(.text+0x1b): undefined reference to `pthread_create'
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_35aa4.dir/build.make:86: recipe for target 'cmTC_35aa4' failed
-make[1]: *** [cmTC_35aa4] Error 1
-make[1]: Leaving directory '/home/zhouxin/Github/EdgeVO/cmake-build-debug/CMakeFiles/CMakeTmp'
-Makefile:121: recipe for target 'cmTC_35aa4/fast' failed
-make: *** [cmTC_35aa4/fast] Error 2
+CMakeFiles/cmTC_1878c.dir/build.make:86: recipe for target 'cmTC_1878c' failed
+make[1]: *** [cmTC_1878c] Error 1
+make[1]: Leaving directory '/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/CMakeFiles/CMakeTmp'
+Makefile:121: recipe for target 'cmTC_1878c/fast' failed
+make: *** [cmTC_1878c/fast] Error 2
 
-File /home/zhouxin/Github/EdgeVO/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+File /home/zhouxin/GitHub/EdgeVO/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
 /* */
 #include <pthread.h>
 
@@ -34,22 +34,22 @@ int main(int argc, char** argv)
 }
 
 Determining if the function pthread_create exists in the pthreads failed with the following output:
-Change Dir: /home/zhouxin/Github/EdgeVO/cmake-build-debug/CMakeFiles/CMakeTmp
+Change Dir: /home/zhouxin/GitHub/EdgeVO/cmake-build-debug/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_e6bff/fast 
-/usr/bin/make -f CMakeFiles/cmTC_e6bff.dir/build.make CMakeFiles/cmTC_e6bff.dir/build
-make[1]: Entering directory '/home/zhouxin/Github/EdgeVO/cmake-build-debug/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_e6bff.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_e6bff.dir/CheckFunctionExists.c.o   -c /home/zhouxin/Software/clion-2019.2.1/bin/cmake/linux/share/cmake-3.14/Modules/CheckFunctionExists.c
-Linking C executable cmTC_e6bff
-/home/zhouxin/Software/clion-2019.2.1/bin/cmake/linux/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e6bff.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_e6bff.dir/CheckFunctionExists.c.o  -o cmTC_e6bff -lpthreads 
+Run Build Command(s):/usr/bin/make cmTC_50a45/fast 
+/usr/bin/make -f CMakeFiles/cmTC_50a45.dir/build.make CMakeFiles/cmTC_50a45.dir/build
+make[1]: Entering directory '/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_50a45.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_50a45.dir/CheckFunctionExists.c.o   -c /home/zhouxin/Software/clion-2019.2.1/bin/cmake/linux/share/cmake-3.14/Modules/CheckFunctionExists.c
+Linking C executable cmTC_50a45
+/home/zhouxin/Software/clion-2019.2.1/bin/cmake/linux/bin/cmake -E cmake_link_script CMakeFiles/cmTC_50a45.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_50a45.dir/CheckFunctionExists.c.o  -o cmTC_50a45 -lpthreads 
 /usr/bin/ld: cannot find -lpthreads
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_e6bff.dir/build.make:86: recipe for target 'cmTC_e6bff' failed
-make[1]: *** [cmTC_e6bff] Error 1
-make[1]: Leaving directory '/home/zhouxin/Github/EdgeVO/cmake-build-debug/CMakeFiles/CMakeTmp'
-Makefile:121: recipe for target 'cmTC_e6bff/fast' failed
-make: *** [cmTC_e6bff/fast] Error 2
+CMakeFiles/cmTC_50a45.dir/build.make:86: recipe for target 'cmTC_50a45' failed
+make[1]: *** [cmTC_50a45] Error 1
+make[1]: Leaving directory '/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/CMakeFiles/CMakeTmp'
+Makefile:121: recipe for target 'cmTC_50a45/fast' failed
+make: *** [cmTC_50a45/fast] Error 2
 
 

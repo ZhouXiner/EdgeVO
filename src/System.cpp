@@ -159,7 +159,7 @@ namespace EdgeVO{
         SE3 Twc = newestKF->Tcw_.inverse();
         Vec3 t = Twc.translation();
         Eigen::Quaterniond q(Twc.rotationMatrix());
-        SingleTrackOut_.open("/home/zhouxin/CLionProjects/IESLAM/output/Single_track.txt", std::ios::binary | std::ios::app | std::ios::in | std::ios::out);
+        SingleTrackOut_.open("/home/zhouxin/GitHub/EdgeVO/output/Single_track.txt", std::ios::binary | std::ios::app | std::ios::in | std::ios::out);
         SingleTrackOut_ << std::fixed  << newestKF->DepthTimeStamp_ << " " << std::setprecision(9) << t[0] << " " << t[1] << " " << t[2]
         << " " << q.x() << " " << q.y() << " " << q.z() << " " <<  q.w() << "\n";
         SingleTrackOut_.close();

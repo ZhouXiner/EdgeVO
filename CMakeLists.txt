@@ -30,9 +30,14 @@ include_directories(${GFLAGS_INCLUDE_DIRS})
 # csparse
 find_package(CSparse REQUIRED)
 include_directories(${CSPARSE_INCLUDE_DIR})
+#yaml cpp
+FIND_PACKAGE(yaml-cpp REQUIRED)
+INCLUDE_DIRECTORIES(${YAMLCPP_INCLUDE_DIR})
 
 set(THIRD_LIBS
-        ${PROJECT_SOURCE_DIR}/3rdparty/lib/libyaml-cpp.so.0.6.3
+        #${PROJECT_SOURCE_DIR}/3rdparty/lib/libyaml-cpp.so.0.6.3
+        ${YAMLCPP_LIBRARY}
+        #yaml-cpp
         ${OpenCV_LIBS}
         ${Pangolin_LIBRARIES} GL GLU GLEW glut
         ${GLOG_LIBRARIES}

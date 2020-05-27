@@ -415,6 +415,8 @@ namespace EdgeVO{
                 double e = dtInfo[0];
                 float huber_weight = Utility::GetHuberWeight(e,TrackConifg_->TrackHuberWeright_);
 
+                float t_weight = Utility::GetTDistributionNewWeight(e);
+
                 if(std::isnan(dtInfo[0]) || std::isnan(dtInfo[1]) || std::isnan(dtInfo[2])){
                     LOG(ERROR) << "Nan Data!";
                     exit(0);
@@ -430,7 +432,7 @@ namespace EdgeVO{
                 buf_warped_residual[mBufferInfo_->GoodEdgesNum_] = static_cast<float>(e);
                 buf_warped_dx[mBufferInfo_->GoodEdgesNum_] = static_cast<float>(dtInfo[1]);
                 buf_warped_dy[mBufferInfo_->GoodEdgesNum_] = static_cast<float>(dtInfo[2]);
-                buf_warped_weight[mBufferInfo_->GoodEdgesNum_] = static_cast<float>(huber_weight);
+                buf_warped_weight[mBufferInfo_->GoodEdgesNum_] = static_cast<float>(t_weight);
                 mBufferInfo_->SumError_ = mBufferInfo_->SumError_ + e;
                 ErrorVec.push_back(e);
                 ++mBufferInfo_->GoodEdgesNum_;
@@ -441,6 +443,7 @@ namespace EdgeVO{
 
         }
 
+        /*
         if(mBufferInfo_->GoodEdgesNum_){
             std::sort(ErrorVec.begin(),ErrorVec.end());
             double mid_e = ErrorVec[static_cast<int>(mBufferInfo_->GoodEdgesNum_ / 2)];
@@ -458,7 +461,7 @@ namespace EdgeVO{
                 buf_warped_weight[i] = Utility::GetTDistributionWeight(buf_warped_residual[i],1.4826 * MAD_theta);
             }
         }
-
+*/
         if(mBufferInfo_->GoodEdgesNum_ != 0){
             //std::cout << "Good num: " << mBufferInfo_->GoodEdgesNum_ << std::endl;
             return mBufferInfo_->SumError_ / static_cast<float>(mBufferInfo_->GoodEdgesNum_);

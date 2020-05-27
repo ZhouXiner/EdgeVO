@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/zhouxin/Github/EdgeVO/main.cpp" "/home/zhouxin/Github/EdgeVO/cmake-build-debug/CMakeFiles/EdgeVO.dir/main.cpp.o"
+  "/home/zhouxin/GitHub/EdgeVO/main.cpp" "/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/CMakeFiles/EdgeVO.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -19,12 +19,12 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/usr/include/suitesparse"
   "../include"
   "/usr/include/eigen3"
-  "/usr/local/include/opencv"
+  "/usr/include/opencv"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/zhouxin/Github/EdgeVO/cmake-build-debug/src/CMakeFiles/EdgeVO_LIBS.dir/DependInfo.cmake"
+  "/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/src/CMakeFiles/EdgeVO_LIBS.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

@@ -5,31 +5,31 @@
 		<Option title="EdgeVO"/>
 		<Option makefile_is_custom="1"/>
 		<Option compiler="gcc"/>
-		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\usr\;CMake Files\..\..\..\..\usr\local\;CMake Files\..\..\..\..\usr\local\share\;CMake Files\..\..\..\..\usr\local\share\OpenCV\;CMake Files\..\..\..\..\usr\local\lib\;CMake Files\..\..\..\..\usr\local\lib\cmake\;CMake Files\..\..\..\..\usr\local\lib\cmake\Ceres\;CMake Files\..\..\..\..\usr\local\lib\cmake\gflags\;CMake Files\..\..\..\..\usr\local\lib\cmake\Pangolin\;CMake Files\..\..\..\..\usr\lib\;CMake Files\..\..\..\..\usr\lib\cmake\;CMake Files\..\..\..\..\usr\lib\cmake\eigen3\;CMake Files\cmake_modules\;CMake Files\src\;"/>
+		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\usr\;CMake Files\..\..\..\..\usr\share\;CMake Files\..\..\..\..\usr\share\OpenCV\;CMake Files\..\..\..\..\usr\local\;CMake Files\..\..\..\..\usr\local\lib\;CMake Files\..\..\..\..\usr\local\lib\cmake\;CMake Files\..\..\..\..\usr\local\lib\cmake\Ceres\;CMake Files\..\..\..\..\usr\local\lib\cmake\gflags\;CMake Files\..\..\..\..\usr\local\lib\cmake\Pangolin\;CMake Files\..\..\..\..\usr\lib\;CMake Files\..\..\..\..\usr\lib\cmake\;CMake Files\..\..\..\..\usr\lib\cmake\eigen3\;CMake Files\cmake_modules\;CMake Files\src\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/home/zhouxin/Github/EdgeVO/cmake-build-debug"/>
+				<Option working_dir="/home/zhouxin/GitHub/EdgeVO/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/home/zhouxin/Github/EdgeVO/cmake-build-debug"/>
+				<Option working_dir="/home/zhouxin/GitHub/EdgeVO/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="EdgeVO">
-				<Option output="/home/zhouxin/Github/EdgeVO/cmake-build-debug/EdgeVO" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/zhouxin/Github/EdgeVO/cmake-build-debug"/>
+				<Option output="/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/EdgeVO" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/zhouxin/GitHub/EdgeVO/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -37,9 +37,9 @@
 					<Add option="-DGFLAGS_IS_A_DLL=0"/>
 					<Add directory="/usr/local/lib/cmake/Pangolin/../../../include"/>
 					<Add directory="/usr/include/suitesparse"/>
-					<Add directory="/home/zhouxin/Github/EdgeVO/include"/>
+					<Add directory="/home/zhouxin/GitHub/EdgeVO/include"/>
 					<Add directory="/usr/include/eigen3"/>
-					<Add directory="/usr/local/include/opencv"/>
+					<Add directory="/usr/include/opencv"/>
 					<Add directory="/usr/include/c++/7"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
 					<Add directory="/usr/include/c++/7/backward"/>
@@ -50,15 +50,15 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 EdgeVO"/>
-					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 EdgeVO"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="EdgeVO/fast">
-				<Option output="/home/zhouxin/Github/EdgeVO/cmake-build-debug/EdgeVO" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/zhouxin/Github/EdgeVO/cmake-build-debug"/>
+				<Option output="/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/EdgeVO" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/zhouxin/GitHub/EdgeVO/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -66,9 +66,9 @@
 					<Add option="-DGFLAGS_IS_A_DLL=0"/>
 					<Add directory="/usr/local/lib/cmake/Pangolin/../../../include"/>
 					<Add directory="/usr/include/suitesparse"/>
-					<Add directory="/home/zhouxin/Github/EdgeVO/include"/>
+					<Add directory="/home/zhouxin/GitHub/EdgeVO/include"/>
 					<Add directory="/usr/include/eigen3"/>
-					<Add directory="/usr/local/include/opencv"/>
+					<Add directory="/usr/include/opencv"/>
 					<Add directory="/usr/include/c++/7"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
 					<Add directory="/usr/include/c++/7/backward"/>
@@ -79,25 +79,25 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 EdgeVO/fast"/>
-					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 EdgeVO/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/home/zhouxin/Github/EdgeVO/cmake-build-debug"/>
+				<Option working_dir="/home/zhouxin/GitHub/EdgeVO/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="EdgeVO_LIBS">
-				<Option output="/home/zhouxin/Github/EdgeVO/cmake-build-debug/src/libEdgeVO_LIBS.so" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/zhouxin/Github/EdgeVO/cmake-build-debug/src"/>
+				<Option output="/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/src/libEdgeVO_LIBS.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/src"/>
 				<Option object_output="./"/>
 				<Option type="3"/>
 				<Option compiler="gcc"/>
@@ -105,9 +105,9 @@
 					<Add option="-DGFLAGS_IS_A_DLL=0"/>
 					<Add directory="/usr/local/lib/cmake/Pangolin/../../../include"/>
 					<Add directory="/usr/include/suitesparse"/>
-					<Add directory="/home/zhouxin/Github/EdgeVO/include"/>
+					<Add directory="/home/zhouxin/GitHub/EdgeVO/include"/>
 					<Add directory="/usr/include/eigen3"/>
-					<Add directory="/usr/local/include/opencv"/>
+					<Add directory="/usr/include/opencv"/>
 					<Add directory="/usr/include/c++/7"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
 					<Add directory="/usr/include/c++/7/backward"/>
@@ -118,15 +118,15 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 EdgeVO_LIBS"/>
-					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 EdgeVO_LIBS"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="EdgeVO_LIBS/fast">
-				<Option output="/home/zhouxin/Github/EdgeVO/cmake-build-debug/src/libEdgeVO_LIBS.so" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/zhouxin/Github/EdgeVO/cmake-build-debug/src"/>
+				<Option output="/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/src/libEdgeVO_LIBS.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/src"/>
 				<Option object_output="./"/>
 				<Option type="3"/>
 				<Option compiler="gcc"/>
@@ -134,9 +134,9 @@
 					<Add option="-DGFLAGS_IS_A_DLL=0"/>
 					<Add directory="/usr/local/lib/cmake/Pangolin/../../../include"/>
 					<Add directory="/usr/include/suitesparse"/>
-					<Add directory="/home/zhouxin/Github/EdgeVO/include"/>
+					<Add directory="/home/zhouxin/GitHub/EdgeVO/include"/>
 					<Add directory="/usr/include/eigen3"/>
-					<Add directory="/usr/local/include/opencv"/>
+					<Add directory="/usr/include/opencv"/>
 					<Add directory="/usr/include/c++/7"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
 					<Add directory="/usr/include/c++/7/backward"/>
@@ -147,119 +147,119 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 EdgeVO_LIBS/fast"/>
-					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j12 -f &quot;/home/zhouxin/Github/EdgeVO/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 EdgeVO_LIBS/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/Utils/LGSX.h">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/Utils/LGSX.h">
 			<Option target="EdgeVO"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/Utils/Utility.h">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/Utils/Utility.h">
 			<Option target="EdgeVO"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/main.cpp">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/main.cpp">
 			<Option target="EdgeVO"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/src/BackEnd.cpp">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/src/BackEnd.cpp">
 			<Option target="EdgeVO_LIBS"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/src/Camera.cpp">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/src/Camera.cpp">
 			<Option target="EdgeVO_LIBS"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/src/EdgePixel.cpp">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/src/EdgePixel.cpp">
 			<Option target="EdgeVO_LIBS"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/src/Frame.cpp">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/src/Frame.cpp">
 			<Option target="EdgeVO_LIBS"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/src/Inputs.cpp">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/src/Inputs.cpp">
 			<Option target="EdgeVO_LIBS"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/src/System.cpp">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/src/System.cpp">
 			<Option target="EdgeVO_LIBS"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/src/Track.cpp">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/src/Track.cpp">
 			<Option target="EdgeVO_LIBS"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/src/Viewer.cpp">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/src/Viewer.cpp">
 			<Option target="EdgeVO_LIBS"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/CMakeLists.txt">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/../../../../usr/local/share/OpenCV/OpenCVConfig-version.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\share\OpenCV\"/>
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/../../../../usr/share/OpenCV/OpenCVConfig-version.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\usr\share\OpenCV\"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/../../../../usr/local/share/OpenCV/OpenCVConfig.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\share\OpenCV\"/>
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/../../../../usr/share/OpenCV/OpenCVConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\usr\share\OpenCV\"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/../../../../usr/local/share/OpenCV/OpenCVModules-release.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\share\OpenCV\"/>
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/../../../../usr/share/OpenCV/OpenCVModules-release.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\usr\share\OpenCV\"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/../../../../usr/local/share/OpenCV/OpenCVModules.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\share\OpenCV\"/>
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/../../../../usr/share/OpenCV/OpenCVModules.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\usr\share\OpenCV\"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/../../../../usr/local/lib/cmake/Ceres/CeresCodeGeneration.cmake">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/../../../../usr/local/lib/cmake/Ceres/CeresConfig.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\lib\cmake\Ceres\"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/../../../../usr/local/lib/cmake/Ceres/CeresConfig.cmake">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/../../../../usr/local/lib/cmake/Ceres/CeresConfigVersion.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\lib\cmake\Ceres\"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/../../../../usr/local/lib/cmake/Ceres/CeresConfigVersion.cmake">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/../../../../usr/local/lib/cmake/Ceres/CeresTargets-release.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\lib\cmake\Ceres\"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/../../../../usr/local/lib/cmake/Ceres/CeresTargets-release.cmake">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/../../../../usr/local/lib/cmake/Ceres/CeresTargets.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\lib\cmake\Ceres\"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/../../../../usr/local/lib/cmake/Ceres/CeresTargets.cmake">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/../../../../usr/local/lib/cmake/Ceres/FindGlog.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\lib\cmake\Ceres\"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/../../../../usr/local/lib/cmake/Ceres/FindGlog.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\lib\cmake\Ceres\"/>
-		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/../../../../usr/local/lib/cmake/gflags/gflags-config-version.cmake">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/../../../../usr/local/lib/cmake/gflags/gflags-config-version.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\lib\cmake\gflags\"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/../../../../usr/local/lib/cmake/gflags/gflags-config.cmake">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/../../../../usr/local/lib/cmake/gflags/gflags-config.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\lib\cmake\gflags\"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/../../../../usr/local/lib/cmake/gflags/gflags-nonamespace-targets-release.cmake">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/../../../../usr/local/lib/cmake/gflags/gflags-nonamespace-targets-release.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\lib\cmake\gflags\"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/../../../../usr/local/lib/cmake/gflags/gflags-nonamespace-targets.cmake">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/../../../../usr/local/lib/cmake/gflags/gflags-nonamespace-targets.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\lib\cmake\gflags\"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/../../../../usr/local/lib/cmake/Pangolin/PangolinConfig.cmake">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/../../../../usr/local/lib/cmake/Pangolin/PangolinConfig.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\lib\cmake\Pangolin\"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/../../../../usr/local/lib/cmake/Pangolin/PangolinConfigVersion.cmake">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/../../../../usr/local/lib/cmake/Pangolin/PangolinConfigVersion.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\lib\cmake\Pangolin\"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/../../../../usr/local/lib/cmake/Pangolin/PangolinTargets-release.cmake">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/../../../../usr/local/lib/cmake/Pangolin/PangolinTargets-release.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\lib\cmake\Pangolin\"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/../../../../usr/local/lib/cmake/Pangolin/PangolinTargets.cmake">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/../../../../usr/local/lib/cmake/Pangolin/PangolinTargets.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\lib\cmake\Pangolin\"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/../../../../usr/lib/cmake/eigen3/Eigen3Config.cmake">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/../../../../usr/lib/cmake/eigen3/Eigen3Config.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\usr\lib\cmake\eigen3\"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/../../../../usr/lib/cmake/eigen3/Eigen3ConfigVersion.cmake">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/../../../../usr/lib/cmake/eigen3/Eigen3ConfigVersion.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\usr\lib\cmake\eigen3\"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/../../../../usr/lib/cmake/eigen3/Eigen3Targets.cmake">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/../../../../usr/lib/cmake/eigen3/Eigen3Targets.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\usr\lib\cmake\eigen3\"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/cmake_modules/FindCSparse.cmake">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/cmake_modules/FindCSparse.cmake">
 			<Option virtualFolder="CMake Files\cmake_modules\"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/cmake_modules/FindGlog.cmake">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/cmake_modules/FindGlog.cmake">
 			<Option virtualFolder="CMake Files\cmake_modules\"/>
 		</Unit>
-		<Unit filename="/home/zhouxin/Github/EdgeVO/src/CMakeLists.txt">
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/cmake_modules/Findyaml-cpp.cmake">
+			<Option virtualFolder="CMake Files\cmake_modules\"/>
+		</Unit>
+		<Unit filename="/home/zhouxin/GitHub/EdgeVO/src/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\src\"/>
 		</Unit>
 	</Project>

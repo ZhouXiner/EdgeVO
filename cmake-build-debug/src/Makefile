@@ -48,10 +48,10 @@ RM = /home/zhouxin/Software/clion-2019.2.1/bin/cmake/linux/bin/cmake -E remove -
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/zhouxin/Github/EdgeVO
+CMAKE_SOURCE_DIR = /home/zhouxin/GitHub/EdgeVO
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/zhouxin/Github/EdgeVO/cmake-build-debug
+CMAKE_BINARY_DIR = /home/zhouxin/GitHub/EdgeVO/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,14 +80,14 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_progress_start /home/zhouxin/Github/EdgeVO/cmake-build-debug/CMakeFiles /home/zhouxin/Github/EdgeVO/cmake-build-debug/src/CMakeFiles/progress.marks
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f CMakeFiles/Makefile2 src/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/zhouxin/Github/EdgeVO/cmake-build-debug/CMakeFiles 0
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_progress_start /home/zhouxin/GitHub/EdgeVO/cmake-build-debug/CMakeFiles /home/zhouxin/GitHub/EdgeVO/cmake-build-debug/src/CMakeFiles/progress.marks
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f CMakeFiles/Makefile2 src/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/zhouxin/GitHub/EdgeVO/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f CMakeFiles/Makefile2 src/clean
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f CMakeFiles/Makefile2 src/clean
 .PHONY : clean
 
 # The main clean target
@@ -97,22 +97,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 src/CMakeFiles/EdgeVO_LIBS.dir/rule:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/EdgeVO_LIBS.dir/rule
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/EdgeVO_LIBS.dir/rule
 .PHONY : src/CMakeFiles/EdgeVO_LIBS.dir/rule
 
 # Convenience name for target.
@@ -122,7 +122,7 @@ EdgeVO_LIBS: src/CMakeFiles/EdgeVO_LIBS.dir/rule
 
 # fast build rule for target.
 EdgeVO_LIBS/fast:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/build
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/build
 .PHONY : EdgeVO_LIBS/fast
 
 BackEnd.o: BackEnd.cpp.o
@@ -131,7 +131,7 @@ BackEnd.o: BackEnd.cpp.o
 
 # target to build an object file
 BackEnd.cpp.o:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/BackEnd.cpp.o
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/BackEnd.cpp.o
 .PHONY : BackEnd.cpp.o
 
 BackEnd.i: BackEnd.cpp.i
@@ -140,7 +140,7 @@ BackEnd.i: BackEnd.cpp.i
 
 # target to preprocess a source file
 BackEnd.cpp.i:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/BackEnd.cpp.i
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/BackEnd.cpp.i
 .PHONY : BackEnd.cpp.i
 
 BackEnd.s: BackEnd.cpp.s
@@ -149,7 +149,7 @@ BackEnd.s: BackEnd.cpp.s
 
 # target to generate assembly for a file
 BackEnd.cpp.s:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/BackEnd.cpp.s
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/BackEnd.cpp.s
 .PHONY : BackEnd.cpp.s
 
 Camera.o: Camera.cpp.o
@@ -158,7 +158,7 @@ Camera.o: Camera.cpp.o
 
 # target to build an object file
 Camera.cpp.o:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Camera.cpp.o
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Camera.cpp.o
 .PHONY : Camera.cpp.o
 
 Camera.i: Camera.cpp.i
@@ -167,7 +167,7 @@ Camera.i: Camera.cpp.i
 
 # target to preprocess a source file
 Camera.cpp.i:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Camera.cpp.i
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Camera.cpp.i
 .PHONY : Camera.cpp.i
 
 Camera.s: Camera.cpp.s
@@ -176,7 +176,7 @@ Camera.s: Camera.cpp.s
 
 # target to generate assembly for a file
 Camera.cpp.s:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Camera.cpp.s
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Camera.cpp.s
 .PHONY : Camera.cpp.s
 
 EdgePixel.o: EdgePixel.cpp.o
@@ -185,7 +185,7 @@ EdgePixel.o: EdgePixel.cpp.o
 
 # target to build an object file
 EdgePixel.cpp.o:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/EdgePixel.cpp.o
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/EdgePixel.cpp.o
 .PHONY : EdgePixel.cpp.o
 
 EdgePixel.i: EdgePixel.cpp.i
@@ -194,7 +194,7 @@ EdgePixel.i: EdgePixel.cpp.i
 
 # target to preprocess a source file
 EdgePixel.cpp.i:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/EdgePixel.cpp.i
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/EdgePixel.cpp.i
 .PHONY : EdgePixel.cpp.i
 
 EdgePixel.s: EdgePixel.cpp.s
@@ -203,7 +203,7 @@ EdgePixel.s: EdgePixel.cpp.s
 
 # target to generate assembly for a file
 EdgePixel.cpp.s:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/EdgePixel.cpp.s
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/EdgePixel.cpp.s
 .PHONY : EdgePixel.cpp.s
 
 Frame.o: Frame.cpp.o
@@ -212,7 +212,7 @@ Frame.o: Frame.cpp.o
 
 # target to build an object file
 Frame.cpp.o:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Frame.cpp.o
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Frame.cpp.o
 .PHONY : Frame.cpp.o
 
 Frame.i: Frame.cpp.i
@@ -221,7 +221,7 @@ Frame.i: Frame.cpp.i
 
 # target to preprocess a source file
 Frame.cpp.i:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Frame.cpp.i
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Frame.cpp.i
 .PHONY : Frame.cpp.i
 
 Frame.s: Frame.cpp.s
@@ -230,7 +230,7 @@ Frame.s: Frame.cpp.s
 
 # target to generate assembly for a file
 Frame.cpp.s:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Frame.cpp.s
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Frame.cpp.s
 .PHONY : Frame.cpp.s
 
 Inputs.o: Inputs.cpp.o
@@ -239,7 +239,7 @@ Inputs.o: Inputs.cpp.o
 
 # target to build an object file
 Inputs.cpp.o:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Inputs.cpp.o
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Inputs.cpp.o
 .PHONY : Inputs.cpp.o
 
 Inputs.i: Inputs.cpp.i
@@ -248,7 +248,7 @@ Inputs.i: Inputs.cpp.i
 
 # target to preprocess a source file
 Inputs.cpp.i:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Inputs.cpp.i
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Inputs.cpp.i
 .PHONY : Inputs.cpp.i
 
 Inputs.s: Inputs.cpp.s
@@ -257,7 +257,7 @@ Inputs.s: Inputs.cpp.s
 
 # target to generate assembly for a file
 Inputs.cpp.s:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Inputs.cpp.s
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Inputs.cpp.s
 .PHONY : Inputs.cpp.s
 
 System.o: System.cpp.o
@@ -266,7 +266,7 @@ System.o: System.cpp.o
 
 # target to build an object file
 System.cpp.o:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/System.cpp.o
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/System.cpp.o
 .PHONY : System.cpp.o
 
 System.i: System.cpp.i
@@ -275,7 +275,7 @@ System.i: System.cpp.i
 
 # target to preprocess a source file
 System.cpp.i:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/System.cpp.i
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/System.cpp.i
 .PHONY : System.cpp.i
 
 System.s: System.cpp.s
@@ -284,7 +284,7 @@ System.s: System.cpp.s
 
 # target to generate assembly for a file
 System.cpp.s:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/System.cpp.s
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/System.cpp.s
 .PHONY : System.cpp.s
 
 Track.o: Track.cpp.o
@@ -293,7 +293,7 @@ Track.o: Track.cpp.o
 
 # target to build an object file
 Track.cpp.o:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Track.cpp.o
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Track.cpp.o
 .PHONY : Track.cpp.o
 
 Track.i: Track.cpp.i
@@ -302,7 +302,7 @@ Track.i: Track.cpp.i
 
 # target to preprocess a source file
 Track.cpp.i:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Track.cpp.i
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Track.cpp.i
 .PHONY : Track.cpp.i
 
 Track.s: Track.cpp.s
@@ -311,7 +311,7 @@ Track.s: Track.cpp.s
 
 # target to generate assembly for a file
 Track.cpp.s:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Track.cpp.s
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Track.cpp.s
 .PHONY : Track.cpp.s
 
 Viewer.o: Viewer.cpp.o
@@ -320,7 +320,7 @@ Viewer.o: Viewer.cpp.o
 
 # target to build an object file
 Viewer.cpp.o:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Viewer.cpp.o
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Viewer.cpp.o
 .PHONY : Viewer.cpp.o
 
 Viewer.i: Viewer.cpp.i
@@ -329,7 +329,7 @@ Viewer.i: Viewer.cpp.i
 
 # target to preprocess a source file
 Viewer.cpp.i:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Viewer.cpp.i
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Viewer.cpp.i
 .PHONY : Viewer.cpp.i
 
 Viewer.s: Viewer.cpp.s
@@ -338,7 +338,7 @@ Viewer.s: Viewer.cpp.s
 
 # target to generate assembly for a file
 Viewer.cpp.s:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Viewer.cpp.s
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(MAKE) -f src/CMakeFiles/EdgeVO_LIBS.dir/build.make src/CMakeFiles/EdgeVO_LIBS.dir/Viewer.cpp.s
 .PHONY : Viewer.cpp.s
 
 # Help Target
@@ -385,6 +385,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

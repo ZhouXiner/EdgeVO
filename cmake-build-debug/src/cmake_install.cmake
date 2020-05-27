@@ -1,4 +1,4 @@
-# Install script for directory: /home/zhouxin/Github/EdgeVO/src
+# Install script for directory: /home/zhouxin/GitHub/EdgeVO/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

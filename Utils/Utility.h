@@ -27,6 +27,11 @@ public:
         return 6.0f / (5.0f + pow(e/theta,2));
     }
 
+    static double GetTDistributionNewWeight(double e) {
+        double v = 3,theta = 2;
+        return (v + 1) / (v + pow(e / theta,2));
+    }
+
     static bool InBorder(Eigen::Vector2d p,int w,int h,int bound){
         return (static_cast<int>(p[0]) >= bound && static_cast<int>(p[0]) <= (w - bound - 1)
                 && static_cast<int>(p[1]) >= bound && static_cast<int>(p[1]) <= (h - bound - 1));

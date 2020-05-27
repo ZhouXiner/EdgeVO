@@ -13,6 +13,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.14.5/CMakeSystem.cmake"
   "../cmake_modules/FindCSparse.cmake"
   "../cmake_modules/FindGlog.cmake"
+  "../cmake_modules/Findyaml-cpp.cmake"
   "../src/CMakeLists.txt"
   "/home/zhouxin/Software/clion-2019.2.1/bin/cmake/linux/share/cmake-3.14/Modules/CMakeCInformation.cmake"
   "/home/zhouxin/Software/clion-2019.2.1/bin/cmake/linux/share/cmake-3.14/Modules/CMakeCXXInformation.cmake"
@@ -46,7 +47,6 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/lib/cmake/eigen3/Eigen3Config.cmake"
   "/usr/lib/cmake/eigen3/Eigen3ConfigVersion.cmake"
   "/usr/lib/cmake/eigen3/Eigen3Targets.cmake"
-  "/usr/local/lib/cmake/Ceres/CeresCodeGeneration.cmake"
   "/usr/local/lib/cmake/Ceres/CeresConfig.cmake"
   "/usr/local/lib/cmake/Ceres/CeresConfigVersion.cmake"
   "/usr/local/lib/cmake/Ceres/CeresTargets-release.cmake"
@@ -60,10 +60,10 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/local/lib/cmake/gflags/gflags-config.cmake"
   "/usr/local/lib/cmake/gflags/gflags-nonamespace-targets-release.cmake"
   "/usr/local/lib/cmake/gflags/gflags-nonamespace-targets.cmake"
-  "/usr/local/share/OpenCV/OpenCVConfig-version.cmake"
-  "/usr/local/share/OpenCV/OpenCVConfig.cmake"
-  "/usr/local/share/OpenCV/OpenCVModules-release.cmake"
-  "/usr/local/share/OpenCV/OpenCVModules.cmake"
+  "/usr/share/OpenCV/OpenCVConfig-version.cmake"
+  "/usr/share/OpenCV/OpenCVConfig.cmake"
+  "/usr/share/OpenCV/OpenCVModules-release.cmake"
+  "/usr/share/OpenCV/OpenCVModules.cmake"
   )
 
 # The corresponding makefile is:

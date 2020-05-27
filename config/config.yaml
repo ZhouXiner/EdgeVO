@@ -1,6 +1,6 @@
 #System Info
-project_path : /home/zhouxin/Github/EdgeVO/
-output_path : /home/zhouxin/Github/EdgeVO/output/track.txt
+project_path : /home/zhouxin/GitHub/EdgeVO/
+output_path : /home/zhouxin/GitHub/EdgeVO/output/track.txt
 
 #Image Dataset Info
 #rgbd_dataset_freiburg1_desk/rgbd_dataset_freiburg1_xyz

@@ -9,10 +9,10 @@ int main(int argc, char* argv[]) {
     std::string ConfigPath_;
     switch(argc){
         case 0:
-            ConfigPath_ = "/home/zhouxin/Github/EdgeVO/config/config.yaml";
+            ConfigPath_ = "/home/zhouxin/GitHub/EdgeVO/config/config.yaml";
             break;
         case 1:
-            ConfigPath_ = "/home/zhouxin/Github/EdgeVO/config/config.yaml";
+            ConfigPath_ = "/home/zhouxin/GitHub/EdgeVO/config/config.yaml";
             break;
         case 2:
             ConfigPath_ = argv[1];

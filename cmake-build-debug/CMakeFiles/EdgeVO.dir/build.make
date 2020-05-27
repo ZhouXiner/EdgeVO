@@ -43,10 +43,10 @@ RM = /home/zhouxin/Software/clion-2019.2.1/bin/cmake/linux/bin/cmake -E remove -
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/zhouxin/Github/EdgeVO
+CMAKE_SOURCE_DIR = /home/zhouxin/GitHub/EdgeVO
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/zhouxin/Github/EdgeVO/cmake-build-debug
+CMAKE_BINARY_DIR = /home/zhouxin/GitHub/EdgeVO/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/EdgeVO.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/EdgeVO.dir/flags.make
 
 CMakeFiles/EdgeVO.dir/main.cpp.o: CMakeFiles/EdgeVO.dir/flags.make
 CMakeFiles/EdgeVO.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhouxin/Github/EdgeVO/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/EdgeVO.dir/main.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/EdgeVO.dir/main.cpp.o -c /home/zhouxin/Github/EdgeVO/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/EdgeVO.dir/main.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/EdgeVO.dir/main.cpp.o -c /home/zhouxin/GitHub/EdgeVO/main.cpp
 
 CMakeFiles/EdgeVO.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/EdgeVO.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/zhouxin/Github/EdgeVO/main.cpp > CMakeFiles/EdgeVO.dir/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/zhouxin/GitHub/EdgeVO/main.cpp > CMakeFiles/EdgeVO.dir/main.cpp.i
 
 CMakeFiles/EdgeVO.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/EdgeVO.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/zhouxin/Github/EdgeVO/main.cpp -o CMakeFiles/EdgeVO.dir/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/zhouxin/GitHub/EdgeVO/main.cpp -o CMakeFiles/EdgeVO.dir/main.cpp.s
 
 # Object files for target EdgeVO
 EdgeVO_OBJECTS = \
@@ -80,37 +80,85 @@ EdgeVO_EXTERNAL_OBJECTS =
 EdgeVO: CMakeFiles/EdgeVO.dir/main.cpp.o
 EdgeVO: CMakeFiles/EdgeVO.dir/build.make
 EdgeVO: src/libEdgeVO_LIBS.so
-EdgeVO: ../3rdparty/lib/libyaml-cpp.so.0.6.3
-EdgeVO: /usr/local/lib/libopencv_dnn.so.3.4.8
-EdgeVO: /usr/local/lib/libopencv_highgui.so.3.4.8
-EdgeVO: /usr/local/lib/libopencv_ml.so.3.4.8
-EdgeVO: /usr/local/lib/libopencv_objdetect.so.3.4.8
-EdgeVO: /usr/local/lib/libopencv_shape.so.3.4.8
-EdgeVO: /usr/local/lib/libopencv_stitching.so.3.4.8
-EdgeVO: /usr/local/lib/libopencv_superres.so.3.4.8
-EdgeVO: /usr/local/lib/libopencv_videostab.so.3.4.8
-EdgeVO: /usr/local/lib/libopencv_viz.so.3.4.8
+EdgeVO: /usr/local/lib/libyaml-cpp.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_shape.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_stitching.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_superres.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_videostab.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_aruco.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_bgsegm.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_bioinspired.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_ccalib.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_datasets.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_dpm.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_face.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_freetype.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_fuzzy.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_hdf.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_line_descriptor.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_optflow.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_plot.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_reg.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_saliency.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_stereo.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_structured_light.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_surface_matching.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_text.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_ximgproc.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_xobjdetect.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_xphoto.so.3.2.0
 EdgeVO: /usr/local/lib/libpangolin.so
 EdgeVO: /usr/local/lib/libglog.so
 EdgeVO: /usr/local/lib/libgflags.so.2.2.2
 EdgeVO: /usr/local/lib/libceres.a
 EdgeVO: /usr/lib/x86_64-linux-gnu/libcxsparse.so
-EdgeVO: /usr/local/lib/libopencv_calib3d.so.3.4.8
-EdgeVO: /usr/local/lib/libopencv_features2d.so.3.4.8
-EdgeVO: /usr/local/lib/libopencv_flann.so.3.4.8
-EdgeVO: /usr/local/lib/libopencv_photo.so.3.4.8
-EdgeVO: /usr/local/lib/libopencv_video.so.3.4.8
-EdgeVO: /usr/local/lib/libopencv_videoio.so.3.4.8
-EdgeVO: /usr/local/lib/libopencv_imgcodecs.so.3.4.8
-EdgeVO: /usr/local/lib/libopencv_imgproc.so.3.4.8
-EdgeVO: /usr/local/lib/libopencv_core.so.3.4.8
-EdgeVO: /usr/lib/x86_64-linux-gnu/libGL.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_video.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_viz.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_phase_unwrapping.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_rgbd.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_calib3d.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_features2d.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_flann.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_objdetect.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_ml.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_highgui.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_photo.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_videoio.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_imgcodecs.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_imgproc.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libopencv_core.so.3.2.0
+EdgeVO: /usr/lib/x86_64-linux-gnu/libOpenGL.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libGLX.so
 EdgeVO: /usr/lib/x86_64-linux-gnu/libGLU.so
 EdgeVO: /usr/lib/x86_64-linux-gnu/libGLEW.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libEGL.so
 EdgeVO: /usr/lib/x86_64-linux-gnu/libSM.so
 EdgeVO: /usr/lib/x86_64-linux-gnu/libICE.so
 EdgeVO: /usr/lib/x86_64-linux-gnu/libX11.so
 EdgeVO: /usr/lib/x86_64-linux-gnu/libXext.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libOpenGL.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libGLX.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libGLU.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libGLEW.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libEGL.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libSM.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libICE.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libX11.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libXext.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libdc1394.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libavcodec.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libavformat.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libavutil.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libswscale.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libavdevice.so
+EdgeVO: /usr/lib/libOpenNI.so
+EdgeVO: /usr/lib/libOpenNI2.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libpng.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libz.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libjpeg.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libtiff.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libIlmImf.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/liblz4.so
 EdgeVO: /usr/local/lib/libglog.so
 EdgeVO: /usr/local/lib/libgflags.so.2.2.2
 EdgeVO: /usr/lib/x86_64-linux-gnu/libspqr.so
@@ -122,16 +170,20 @@ EdgeVO: /usr/lib/x86_64-linux-gnu/libcamd.so
 EdgeVO: /usr/lib/x86_64-linux-gnu/libcolamd.so
 EdgeVO: /usr/lib/x86_64-linux-gnu/libamd.so
 EdgeVO: /usr/lib/x86_64-linux-gnu/liblapack.so
-EdgeVO: /usr/lib/x86_64-linux-gnu/libblas.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libf77blas.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libatlas.so
 EdgeVO: /usr/lib/x86_64-linux-gnu/libsuitesparseconfig.so
 EdgeVO: /usr/lib/x86_64-linux-gnu/librt.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libmetis.so
 EdgeVO: /usr/lib/x86_64-linux-gnu/liblapack.so
-EdgeVO: /usr/lib/x86_64-linux-gnu/libblas.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libf77blas.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libatlas.so
 EdgeVO: /usr/lib/x86_64-linux-gnu/libsuitesparseconfig.so
 EdgeVO: /usr/lib/x86_64-linux-gnu/librt.so
+EdgeVO: /usr/lib/x86_64-linux-gnu/libmetis.so
 EdgeVO: /usr/lib/x86_64-linux-gnu/libcxsparse.so
 EdgeVO: CMakeFiles/EdgeVO.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/zhouxin/Github/EdgeVO/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable EdgeVO"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/zhouxin/GitHub/EdgeVO/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable EdgeVO"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/EdgeVO.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -144,6 +196,6 @@ CMakeFiles/EdgeVO.dir/clean:
 .PHONY : CMakeFiles/EdgeVO.dir/clean
 
 CMakeFiles/EdgeVO.dir/depend:
-	cd /home/zhouxin/Github/EdgeVO/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/zhouxin/Github/EdgeVO /home/zhouxin/Github/EdgeVO /home/zhouxin/Github/EdgeVO/cmake-build-debug /home/zhouxin/Github/EdgeVO/cmake-build-debug /home/zhouxin/Github/EdgeVO/cmake-build-debug/CMakeFiles/EdgeVO.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/zhouxin/GitHub/EdgeVO/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/zhouxin/GitHub/EdgeVO /home/zhouxin/GitHub/EdgeVO /home/zhouxin/GitHub/EdgeVO/cmake-build-debug /home/zhouxin/GitHub/EdgeVO/cmake-build-debug /home/zhouxin/GitHub/EdgeVO/cmake-build-debug/CMakeFiles/EdgeVO.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/EdgeVO.dir/depend
 

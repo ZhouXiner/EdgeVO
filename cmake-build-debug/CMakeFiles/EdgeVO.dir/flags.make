@@ -6,5 +6,5 @@ CXX_FLAGS =  -O3 -Wall   -std=gnu++14
 
 CXX_DEFINES = -DGFLAGS_IS_A_DLL=0
 
-CXX_INCLUDES = -I/usr/local/lib/cmake/Pangolin/../../../include -I/usr/include/suitesparse -I/home/zhouxin/Github/EdgeVO/include -isystem /usr/include/eigen3 -isystem /usr/local/include/opencv 
+CXX_INCLUDES = -I/usr/local/lib/cmake/Pangolin/../../../include -I/usr/include/suitesparse -I/home/zhouxin/GitHub/EdgeVO/include -isystem /usr/include/eigen3 -isystem /usr/include/opencv 
 
