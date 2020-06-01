@@ -47,10 +47,11 @@ set(THIRD_LIBS
         ${CSPARSE_LIBRARY})
 
 set(UTILITY_HEADER_FILES "Utils/LGSX.h" "Utils/Utility.h")
-
+set(CERES_HEADER_FILES "include/CeresModel/PoseLocalParameter.h" include/CeresModel/CeresTrack.h)
+set(CERES_SRC_FILES "include/CeresModel/PoseLocalParameter.cpp" include/CeresModel/CeresTrack.cpp)
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
 add_subdirectory(src)
 
-add_executable(EdgeVO main.cpp ${UTILITY_HEADER_FILES})
+add_executable(EdgeVO main.cpp ${UTILITY_HEADER_FILES} ${CERES_HEADER_FILES} ${CERES_SRC_FILES})
 target_link_libraries(EdgeVO EdgeVO_LIBS ${THIRD_LIBS})

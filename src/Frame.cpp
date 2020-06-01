@@ -169,6 +169,7 @@ namespace EdgeVO{
     }
 
     Vec2 Frame::GetNearestEdge(int x, int y, int lvl) {
+        ///just like the 并查集
         Vec2 output;
         while(true){
             const uint8_t last_x = LocationX_[lvl].at<uint8_t>(y,x);

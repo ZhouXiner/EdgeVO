@@ -29,8 +29,6 @@ namespace EdgeVO{
 
         Vec2 GetNearestEdge(int x,int y,int lvl);
 
-
-
         void DeBugImg();
 
 
