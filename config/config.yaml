@@ -33,6 +33,7 @@ cannythreshold_low : 60
 cannythreshold_high : 80
 edge_patch_num : 20
 use_edge_balance : true
+location_mask_size : 5
 
 #System Info
 initialize_min_num : 5

@@ -46,6 +46,7 @@ namespace EdgeVO{
             CannyThresholdH_ = ConfigInfo_["cannythreshold_high"].as<int>();
             EdgePatchSize_ = ConfigInfo_["edge_patch_num"].as<int>();
             UseEdgePatch_ = ConfigInfo_["use_edge_balance"].as<bool>();
+            LocationMaskSize_ = ConfigInfo_["location_mask_size"].as<int>();
 
             /**System Info*/
             InitMinNum_ = ConfigInfo_["initialize_min_num"].as<int>();
@@ -137,6 +138,7 @@ namespace EdgeVO{
         int CannyThresholdH_;
         int EdgePatchSize_;
         bool UseEdgePatch_;
+        int LocationMaskSize_;
 
         /**System Info*/
         int InitMinNum_;

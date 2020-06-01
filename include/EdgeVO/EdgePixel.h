@@ -23,12 +23,6 @@ namespace EdgeVO{
         EdgePixel(double x,double y,int lvl,double depth,double dt,double weight = 1.0f,Vec3 color = Vec3(0,0,0));
         Vec2 ReturnPixelPosition();
         Vec3 ReturnHomPosition();
-        void UpdateObservation(int id);
-
-        bool ChangeObservation(int id,int newest_id);
-        bool CheckGoodState(int obs);
-        bool ChooseGoodEdge(int obs);
-        bool ChooseNewGoodEdge(int obs);
 
         double Hostx_,Hosty_; /**Position in pixel Image*/
         int Lvl_; /**Which level*/
@@ -38,8 +32,10 @@ namespace EdgeVO{
         double DepthInverse_;
         double Weight_;
 
+        double theta_;
+        double variance_;
+
         EdgeStatus EdgeStatus_;
-        std::list<int> Observations_;
         int UsedNum_ = 0;
     };
 }

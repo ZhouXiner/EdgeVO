@@ -23,8 +23,12 @@ namespace EdgeVO{
         void GetPyramidImgs(); /**Get the Edge, DT Imgs in each Pyramid*/
         void GetPyramidDTInfo(); /**For each DT Image, get the (dt,gredient_x,gredient_y)*/
         void GetEdgePixels();
+        void GetLocation();
         void GetEdge(cv::Mat& EdgeImg,const cv::Mat &GrayImg);
         void GetDT(cv::Mat& DTImg,const cv::Mat &EdgeImg);
+
+        Vec2 GetNearestEdge(int x,int y,int lvl);
+
 
 
         void DeBugImg();
@@ -62,9 +66,11 @@ namespace EdgeVO{
         std::vector<cv::Mat> GrayImgs_;
         std::vector<cv::Mat> EdgeImgs_;
         std::vector<cv::Mat> DTImgs_;
-
+        std::vector<cv::Mat> LocationX_;
+        std::vector<cv::Mat> LocationY_;
         /**Pyramid and Pixel Info*/
         std::vector<Vec3*> PyramidDT_; /**vec3f(DT,gredient_x,gredient_y)*/
+
         std::vector<std::list<EdgePixel::Ptr>> EdgePixels_;  /**pyramid Pixels*/
         std::vector<std::vector<int>> EdgeNumCountVec_;
         int PatchNumEachLvl_[3];

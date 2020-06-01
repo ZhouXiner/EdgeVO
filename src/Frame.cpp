@@ -138,6 +138,52 @@ namespace EdgeVO{
         }
     }
 
+    void Frame::GetLocation() {
+        for(size_t lvl = 0;lvl < CameraConfig_->PyramidLevel_;++lvl){
+            LocationX_.push_back(cv::Mat(CameraConfig_->SizeH_[lvl],CameraConfig_->SizeW_[lvl],CV_8UC1));
+            LocationY_.push_back(cv::Mat(CameraConfig_->SizeH_[lvl],CameraConfig_->SizeW_[lvl],CV_8UC1));
+        }
+
+        int maskSize = FrameConfig_->LocationMaskSize_;
+        int minDTLocation[2] = {0};
+        for(size_t lvl = 0;lvl < CameraConfig_->PyramidLevel_;++lvl){
+            int Lvlw = CameraConfig_->SizeW_[lvl];
+            int Lvlh = CameraConfig_->SizeH_[lvl];
+            for(int col = 0;col < Lvlw;++col) {
+                for (int row = 0; row < Lvlh; ++row) {
+                    float minDT_ = 99999;
+                    for(int x = std::max(0,col - maskSize);x<std::min(col + maskSize,Lvlw);++x){
+                        for(int y = std::max(0,row - maskSize);y<std::min(row + maskSize,Lvlw);++y){
+                            if(DTImgs_[lvl].at<float>(row,col) < minDT_){
+                                minDTLocation[0] = x;
+                                minDTLocation[1] = y;
+                                minDT_ = DTImgs_[lvl].at<float>(row,col);
+                            }
+                        }
+                    }
+                    LocationX_[lvl].at<uint8_t>(row,col) = minDTLocation[0];
+                    LocationY_[lvl].at<uint8_t>(row,col) = minDTLocation[1];
+                }
+            }
+        }
+    }
+
+    Vec2 Frame::GetNearestEdge(int x, int y, int lvl) {
+        Vec2 output;
+        while(true){
+            const uint8_t last_x = LocationX_[lvl].at<uint8_t>(y,x);
+            const uint8_t last_y = LocationX_[lvl].at<uint8_t>(y,x);
+            if(last_x == x && last_y == y){
+                output[0] = x;
+                output[1] = y;
+                return output;
+            }else{
+                x = last_x;
+                y = last_y;
+            }
+        }
+    }
+
     void Frame::DeBugImg() {
         //check the DT Info
 
@@ -173,6 +219,7 @@ namespace EdgeVO{
             cv::imshow("Depth_" + std::to_string(lvl),depth_img);
         }
 */
+
         for(size_t lvl = 0;lvl < FrameConfig_->PyramidLevel_;lvl++){
             cv::Mat rgd_img = RGBImgs_[lvl];
             int patch_w = static_cast<int>((CameraConfig_->SizeW_[lvl] + 0.5) / FrameConfig_->EdgePatchSize_);
@@ -195,6 +242,7 @@ namespace EdgeVO{
         }
 
         cv::waitKey(0);
+
     }
 
 
