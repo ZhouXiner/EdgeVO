@@ -56,7 +56,7 @@ namespace EdgeVO{
             double dis_g = gradient_.norm();
             //std::cout << "error: " << residuals[0] << " origin: " << dis_e << " near: " << dis_g << std::endl;
             //residuals[0] = (Puv_target - target_edge).norm();
-            residuals[0] = pow(error_Vec.dot(g),2);
+            residuals[0] = error_Vec.dot(g);
             //residuals[0] = error_Vec.dot(error_Vec);
             //std::cout << "error: " << residuals[0] << std::endl;
             //residuals[0] = pow (error_Vec.dot(error_Vec),0.5);
@@ -84,8 +84,9 @@ namespace EdgeVO{
             double dis_g2 = gradient_.dot(gradient_);
             //jaco << (target_edge[0] - Puv_target[0]) * pow(dis,-1/2) * weight,(target_edge[1] - Puv_target[1]) * pow(dis,-1/2) * weight;
             //jaco << 2 * error_Vec[0] * weight,2 * error_Vec[1] * weight;
-            jaco << (2 * weight * g[0] * (error_Vec[0] * g[0] + error_Vec[1] * g[1])) / dis_g2,
-                    (2 * weight * g[1] * (error_Vec[0] * g[0] + error_Vec[1] * g[1])) / dis_g2;
+            //jaco << (2 * weight * g[0] * (error_Vec[0] * g[0] + error_Vec[1] * g[1])),
+            //        (2 * weight * g[1] * (error_Vec[0] * g[0] + error_Vec[1] * g[1]));
+            jaco << g[0],g[1];
             if(jacobians[0]){
                 Eigen::Map<Eigen::Matrix<double, 1, 6, Eigen::RowMajor>> jacobian_pose_0(jacobians[0]);
                 Eigen::Matrix<double,2,6> jaco_0;

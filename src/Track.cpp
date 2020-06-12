@@ -187,7 +187,7 @@ namespace EdgeVO{
                     Vec2 g = gradient.normalized();
                     Vec2 error_Vec = Puv_target - target_edge;
                     //double e = error_Vec.dot(error_Vec);
-                    double e = abs(error_Vec.dot(g));
+                    double e = error_Vec.dot(g);
                     if(TrackConifg_->UseTrackFilter_ && e > TrackConifg_->TrackFilter_[lvl]){
                         continue;
                     }
@@ -303,7 +303,7 @@ namespace EdgeVO{
         initialize_pose = SE3::exp(se3_pose_vector);
         double cost_after = TrackNearestError(target_frame,host_frame,initialize_pose);
 
-        if(cost_after < cost_before){
+        if(abs(cost_after) < abs(cost_before)){
             LOG(INFO) << "Good Id: "<< target_frame->Id_ << " host: " << host_frame->Id_ << " Num: " << mBufferInfo_->GoodEdgesNum_
                       << " (Before,after) (" << cost_before << "," << cost_after << ")";
             return TrackerStatus::Ok;
