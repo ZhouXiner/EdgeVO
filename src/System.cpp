@@ -97,9 +97,6 @@ namespace EdgeVO{
             newestFrame->UpdatePoseCW(pose_t_h * host_frame->ReturnPoseCW());
             newestFrame->UpdatePoseC1C2(pose_t_h);
             newestFrame->UpdateRefKF(host_frame);
-            if(track_status != Tracker::TrackerStatus::Lost){
-                LostInLastFrame_ = false;
-            }
         }
 
         auto t2=std::chrono::steady_clock::now();

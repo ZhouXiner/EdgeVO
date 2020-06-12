@@ -14,6 +14,8 @@
 #include "EdgeVO/Config.h"
 #include "EdgeVO/Frame.h"
 #include "EdgeVO/Camera.h"
+#include "CeresModel/PoseLocalParameter.h"
+#include "CeresModel/CeresTrack.h"
 
 namespace lsd_slam{class LGS6; }
 /**Track between two corresponding Frames, initlize the Pose between two Frames*/
@@ -66,22 +68,27 @@ namespace EdgeVO{
         Tracker(const SystemConfig::Ptr system_config,const CameraConfig::Ptr camera_config);
         ~Tracker();
         TrackerStatus TrackNewestFrame(Frame::Ptr& target_frame,const Frame::Ptr& host_frame,std::vector<SE3>& initialize_pose,SE3& pose_final_change);
-        TrackerStatus TrackNewestFrameUsingLSD(Frame::Ptr& target_frame,const Frame::Ptr& host_frame,SE3& initialize_pose);
-        TrackerStatus TrackNewestFrameUsingLSDOnLvl(Frame::Ptr& target_frame,const Frame::Ptr& host_frame,SE3& initialize_pose,int lvl);
-        double TrackNewestError(Frame::Ptr& target_frame,const Frame::Ptr& host_frame,SE3& initialize_pose,int lvl);
-        void ComputeJacobianSSE(lsd_slam::LGS6& ls,int lvl);
+
+        TrackerStatus TrackNewestFrameUsingCeres(Frame::Ptr& target_frame,const Frame::Ptr& host_frame,SE3& initialize_pose);
+        TrackerStatus TrackNewestFrameUsingCeresOnLvl(Frame::Ptr& target_frame,const Frame::Ptr& host_frame,SE3& initialize_pose,int lvl);
 
         TrackerStatus CheckTrackStatus(const Frame::Ptr& target_frame,const Frame::Ptr& host_frame,const SE3& initialize_pose,TrackerStatus status);
         TrackerStatus CheckKeyFrame(const Frame::Ptr& target_frame,const Frame::Ptr& host_frame,const SE3& initialize_pose);
 
         SE3 CheckBestInitPose(Frame::Ptr& target_frame,const Frame::Ptr& host_frame,std::vector<SE3>& initialize_pose);
 
-        void ReprojectError(const Frame::Ptr& target_frame,const Frame::Ptr& host_frame,const SE3& initialize_pose);
+        double ReprojectError(const Frame::Ptr& target_frame,const Frame::Ptr& host_frame,const SE3& initialize_pose);
+        double TrackNearestError(const Frame::Ptr& target_frame,const Frame::Ptr& host_frame,const SE3& initialize_pose);
+
         double TrackAverageError(const Frame::Ptr& target_frame,const Frame::Ptr& host_frame,const SE3& initialize_pose);
-        double TrackAverageErrorLvl(const Frame::Ptr& target_frame,const Frame::Ptr& host_frame,const SE3& initialize_pose,int lvl);
         Vec3 InterpolateDTdxdy(const Vec2 Puv,const Vec3* DTInfo,int lvl);
         std::vector<SE3> TheLastTryPoses(std::vector<SE3> tryPoses);
         void DebugError(double e);
+
+        void vector2double();
+        void double2vector();
+
+        void Debug(Frame::Ptr host,Frame::Ptr target,int lvl);
 
         SystemConfig::Ptr TrackConifg_;
         CameraConfig::Ptr CameraConfig_;
@@ -95,6 +102,9 @@ namespace EdgeVO{
         mutable float* buf_warped_dy;
         mutable float* buf_warped_residual;
         mutable float* buf_warped_weight;
+
+        double* se3_pose_double;
+        Vec6 se3_pose_vector;
         std::mutex PoseDataMutex_;
     };
 }

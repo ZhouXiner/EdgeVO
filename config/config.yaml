@@ -33,14 +33,14 @@ cannythreshold_low : 60
 cannythreshold_high : 80
 edge_patch_num : 20
 use_edge_balance : true
-location_mask_size : 5
+location_mask_size : 1
 
 #System Info
 initialize_min_num : 5
 
 
 #Track info
-track_max_error_after_track : 3
+track_max_error_after_track : 20
 track_iters : 150
 track_solver_time : 0.005
 track_huber_weight : 0.3

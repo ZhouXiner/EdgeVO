@@ -79,9 +79,9 @@ namespace EdgeVO{
 
     void Viewer::DrawTrajectory() {
         for (size_t i = 0; i < ActiveKeyFrames_.size() - 1; i++) {
-            glBegin(GL_LINES);
-            glLineWidth(3);
+            glLineWidth(2);
             glColor3f(0.0, 0.0, 0.0);
+            glBegin(GL_LINES);
             Vec3 p1 = ActiveKeyFrames_[i]->Tcw_.inverse().translation();
             Vec3 p2 = ActiveKeyFrames_[i+1]->Tcw_.inverse().translation();
             glVertex3d(p1[0], p1[1], p1[2]);

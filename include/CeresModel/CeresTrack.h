@@ -10,11 +10,11 @@
 #include "EdgeVO/Frame.h"
 #include "../Utils/Utility.h"
 
-namespace EDGEVO{
+namespace EdgeVO{
     class TrackCostFunction : public ceres::SizedCostFunction<1,6>{
     public:
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
-        TrackCostFunction(Vec2 point,double depth,EdgeVO::Frame::Ptr& frame,EdgeVO::CameraConfig::Ptr& camera,int lvl);
+        TrackCostFunction(Vec2 point,Vec2 gradient,double depth,EdgeVO::Frame::Ptr& frame,EdgeVO::CameraConfig::Ptr& camera,int lvl);
         virtual bool Evaluate(double const *const *parameters, double *residuals, double **jacobians) const;
         void check(double **parameters);
         bool InBorder(Vec2 Puv) const;
@@ -22,6 +22,7 @@ namespace EDGEVO{
 
         Vec2 Puv_host_;
         double depth_;
+        Vec2 gradient_;
         Vec3* DTInfo_;
         EdgeVO::CameraConfig::Ptr Camera_;
         EdgeVO::Frame::Ptr TargetFrame_;

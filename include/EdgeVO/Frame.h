@@ -27,6 +27,7 @@ namespace EdgeVO{
         void GetEdge(cv::Mat& EdgeImg,const cv::Mat &GrayImg);
         void GetDT(cv::Mat& DTImg,const cv::Mat &EdgeImg);
 
+        Vec2 GetGradient(const Vec2& p,int lvl);
         Vec2 GetNearestEdge(int x,int y,int lvl);
 
         void DeBugImg();

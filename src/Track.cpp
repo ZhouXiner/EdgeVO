@@ -7,24 +7,11 @@ namespace EdgeVO{
     Tracker::Tracker(const SystemConfig::Ptr system_config,const CameraConfig::Ptr camera_config) {
         TrackConifg_ = system_config;
         CameraConfig_ = camera_config;
-        float memSize = CameraConfig_->SizeW_[0] * CameraConfig_->SizeH_[0];
-        buf_warped_residual = static_cast<float*>(Eigen::internal::aligned_malloc(memSize));
-        buf_warped_dx = static_cast<float*>(Eigen::internal::aligned_malloc(memSize));
-        buf_warped_dy = static_cast<float*>(Eigen::internal::aligned_malloc(memSize));
-        buf_warped_x = static_cast<float*>(Eigen::internal::aligned_malloc(memSize));
-        buf_warped_y = static_cast<float*>(Eigen::internal::aligned_malloc(memSize));
-        buf_warped_depth = static_cast<float*>(Eigen::internal::aligned_malloc(memSize));
-        buf_warped_weight = static_cast<float*>(Eigen::internal::aligned_malloc(memSize));
+        se3_pose_double = (double*)malloc(sizeof(double) * 6);
     }
 
     Tracker::~Tracker(){
-        Eigen::internal::aligned_free((void*)buf_warped_residual);
-        Eigen::internal::aligned_free((void*)buf_warped_dx);
-        Eigen::internal::aligned_free((void*)buf_warped_dy);
-        Eigen::internal::aligned_free((void*)buf_warped_x);
-        Eigen::internal::aligned_free((void*)buf_warped_y);
-        Eigen::internal::aligned_free((void*)buf_warped_depth);
-        Eigen::internal::aligned_free((void*)buf_warped_weight);
+        free(se3_pose_double);
     }
     /**1.Get Best initialization pose  2.Calculate error   3.optimize error*/
     Tracker::TrackerStatus Tracker::TrackNewestFrame(EdgeVO::Frame::Ptr& target_frame,
@@ -36,28 +23,31 @@ namespace EdgeVO{
         auto t2=std::chrono::steady_clock::now();
 
         SE3 TrackPose = BestInitPose;
-        TrackerStatus trackStatus = TrackNewestFrameUsingLSD(target_frame,host_frame,TrackPose);
+        TrackerStatus trackStatus = TrackNewestFrameUsingCeres(target_frame,host_frame,TrackPose);
 
         auto t3=std::chrono::steady_clock::now();
 
         pose_final_change = TrackPose;
 
+        /*
         TrackerStatus TestStatus = CheckTrackStatus(target_frame,host_frame,TrackPose,trackStatus);
 
         ///如果失败了，我们最后给它一次机会，在２７个方向上重新track
+
         if(TestStatus == TrackerStatus::Lost){
             std::vector<SE3> LastTryPoses = TheLastTryPoses(initialize_pose);
             for(auto& pose:LastTryPoses){
-                TrackerStatus tmpstatus = TrackNewestFrameUsingLSD(target_frame,host_frame,pose);
+                TrackerStatus tmpstatus = TrackNewestFrameUsingCeres(target_frame,host_frame,pose);
                 tmpstatus = CheckTrackStatus(target_frame,host_frame,pose,tmpstatus);
                 if(tmpstatus != TrackerStatus::Lost){
-                    pose_final_change = TrackPose;
+                    pose_final_change = pose;
                     return tmpstatus;
                 }
             }
         }else{
             return TestStatus;
         }
+         */
         return CheckTrackStatus(target_frame,host_frame,TrackPose,trackStatus);
     }
 
@@ -66,7 +56,7 @@ namespace EdgeVO{
         double min_cost = 9999,min_id;
         SE3 pose;
         for(size_t i = 0;i<initialize_pose.size();i++){
-            double cost = TrackAverageError(target_frame,host_frame,initialize_pose[i]);
+            double cost = TrackNearestError(target_frame,host_frame,initialize_pose[i]);
             //std::cout << "id: " << target_frame->Id_ << " cost: " << cost << " which: " << i << std::endl;
             if(min_cost > cost){
                 min_cost = cost;
@@ -75,53 +65,8 @@ namespace EdgeVO{
             }
         }
         pose = initialize_pose[min_id];
-        LOG(INFO) << "Check the best initialization " << min_id;
+        LOG(INFO) << "Check the best initialization " << min_id << " Id: " << target_frame->Id_;
         return pose;
-    }
-
-    double Tracker::TrackAverageErrorLvl(const EdgeVO::Frame::Ptr &target_frame, const EdgeVO::Frame::Ptr &host_frame,
-                                         const SE3 &initialize_pose, int lvl) {
-        double error = 0;
-        int goodEdge = 0;
-        for(auto &pixel : host_frame->EdgePixels_[lvl]){
-            Vec2 Puv_host = pixel->ReturnPixelPosition();
-            double depth_host = pixel->Depth_;
-            Vec3 Pxyz_host = CameraConfig_->pixel2camera(Puv_host,depth_host,lvl);
-
-            Mat33 R_t_h = initialize_pose.rotationMatrix();
-            Vec3 T_t_h = initialize_pose.translation();
-            Vec3 Pxyz_target = R_t_h * Pxyz_host + T_t_h;
-            Vec2 Puv_target = CameraConfig_->camera2pixel(Pxyz_target,lvl);
-
-
-            if(Utility::InBorder(Puv_target,CameraConfig_->SizeW_[lvl],CameraConfig_->SizeH_[lvl],CameraConfig_->ImageBound_) && Pxyz_target[2] > 0){
-                Vec3 dtInfo = InterpolateDTdxdy(Puv_target,target_frame->PyramidDT_[lvl],lvl);
-
-                if(std::isnan(dtInfo[0]) || std::isnan(dtInfo[1]) || std::isnan(dtInfo[2])){
-                    LOG(ERROR) << "Nan Data!";
-                    exit(0);
-                }
-
-                //double e = dtInfo[0] * CameraConfig_->Weight_[lvl];
-
-                double e = dtInfo[0];
-                if(TrackConifg_->UseTrackFilter_ && e > TrackConifg_->TrackFilter_[lvl]){
-                    continue;
-                }
-
-                if(std::isnan(e)){
-                    LOG(ERROR) << "Bad info " << Puv_target << CameraConfig_->SizeW_[lvl] << " " << CameraConfig_->SizeH_[lvl];
-                    exit(0);
-                }
-                error = error + e;
-                ++goodEdge;
-            }
-        }
-        if(goodEdge == 0){
-            LOG(ERROR) << "Test no good edge !" << " id: " << target_frame->Id_ << std::endl;
-            return MAXFLOAT;
-        }
-        return error / static_cast<double>(goodEdge);
     }
 
     double Tracker::TrackAverageError(const EdgeVO::Frame::Ptr& target_frame, const EdgeVO::Frame::Ptr& host_frame,
@@ -169,50 +114,40 @@ namespace EdgeVO{
         return error / static_cast<double>(goodEdge);
     }
 
-    void Tracker::ReprojectError(const EdgeVO::Frame::Ptr& target_frame, const EdgeVO::Frame::Ptr& host_frame,
+    double Tracker::ReprojectError(const EdgeVO::Frame::Ptr& target_frame, const EdgeVO::Frame::Ptr& host_frame,
                                  const SE3 &initialize_pose) {
 
-        int lvl = 0;
-        //mBufferInfo_->Reset();
-        for(auto &pixel : host_frame->EdgePixels_[lvl]){
-            Vec2 Puv_host = pixel->ReturnPixelPosition();
-            double depth_host = pixel->Depth_;
-            Vec3 Pxyz_host = CameraConfig_->pixel2camera(Puv_host,depth_host,lvl);
+        int good_num = 0;
+        double error = 0;
+        for(size_t lvl = 0;lvl < TrackConifg_->PyramidLevel_;++lvl){
+            for(auto &pixel : host_frame->EdgePixels_[lvl]){
+                Vec2 Puv_host = pixel->ReturnPixelPosition();
+                double depth_host = pixel->Depth_;
+                Vec3 Pxyz_host = CameraConfig_->pixel2camera(Puv_host,depth_host,lvl);
+                Vec3 Pxyz_target = CameraConfig_->camera2camera(Pxyz_host,initialize_pose);
+                Vec2 Puv_target = CameraConfig_->camera2pixel(Pxyz_target,lvl);
 
-            Mat33 R_t_h = initialize_pose.rotationMatrix();
-            Vec3 T_t_h = initialize_pose.translation();
-            Vec3 Pxyz_target = R_t_h * Pxyz_host + T_t_h;
-            Vec2 Puv_target = CameraConfig_->camera2pixel(Pxyz_target,lvl);
+                if(Utility::InBorder(Puv_target,CameraConfig_->SizeW_[lvl],CameraConfig_->SizeH_[lvl],CameraConfig_->ImageBound_) && Pxyz_target[2] > 0){
+                    double e = (Puv_host - Puv_target).norm();
+                    if(TrackConifg_->UseTrackFilter_ && e > TrackConifg_->TrackFilter_[lvl]){
+                        continue;
+                    }
 
-            if(Utility::InBorder(Puv_target,CameraConfig_->SizeW_[lvl],CameraConfig_->SizeH_[lvl],CameraConfig_->ImageBound_) && Pxyz_target[2] > 0){
-                Vec3 dtInfo = InterpolateDTdxdy(Puv_target,target_frame->PyramidDT_[lvl],lvl);
-
-                if(std::isnan(dtInfo[0]) || std::isnan(dtInfo[1]) || std::isnan(dtInfo[2])){
-                    LOG(ERROR) << "Nan Data!";
-                    exit(0);
+                    if(std::isnan(e)){
+                        LOG(ERROR) << "Bad info " << Puv_target << CameraConfig_->SizeW_[lvl] << " " << CameraConfig_->SizeH_[lvl];
+                        exit(0);
+                    }
+                    error += e;
+                    ++good_num;
                 }
-
-                double e = dtInfo[0];
-
-                if(TrackConifg_->UseTrackFilter_ && e > TrackConifg_->TrackFilter_[lvl]){
-                    continue;
-                }
-
-                if(std::isnan(e)){
-                    LOG(ERROR) << "Bad info " << Puv_target << CameraConfig_->SizeW_[lvl] << " " << CameraConfig_->SizeH_[lvl];
-                    exit(0);
-                }
-                //++mBufferInfo_->GoodEdgesNum_;
-                mBufferInfo_->ReprojectError_ += (Puv_host - Puv_target).norm();
-                mBufferInfo_->DTError_ += e;
-                Mat33 R_identity = Mat33::Identity();
-                Vec3 Pxyz_translation = R_identity * Pxyz_host + T_t_h;
-                Vec2 Puv_host_reproject = CameraConfig_->camera2pixel(Pxyz_translation,lvl);
-
-                mBufferInfo_->ReprojectErrorSelf_ += (Puv_host - Puv_host_reproject).norm();
             }
         }
-        return;
+        if(good_num == 0){
+            LOG(ERROR) << "Reproject no good edge !" << " host id: " << host_frame->Id_ << " target id: " << target_frame->Id_ << std::endl;
+            return MAXFLOAT;
+        }
+
+        return error / good_num;
     }
     Vec3 Tracker::InterpolateDTdxdy(const Vec2 Puv, const Vec3 * DTInfo,int lvl) {
         const int u_int = static_cast<int>(Puv(0));
@@ -229,13 +164,57 @@ namespace EdgeVO{
         return result;
     }
 
-    Tracker::TrackerStatus Tracker::TrackNewestFrameUsingLSD(EdgeVO::Frame::Ptr& target_frame,
-                                                             const EdgeVO::Frame::Ptr& host_frame,
-                                                             SE3 &initialize_pose) {
+    double Tracker::TrackNearestError(const EdgeVO::Frame::Ptr &target_frame, const EdgeVO::Frame::Ptr &host_frame,
+                                      const SE3 &initialize_pose) {
+        int good_num = 0;
+        double error = 0;
+        for(size_t lvl = 0;lvl < TrackConifg_->PyramidLevel_;++lvl){
+            for(auto &pixel : host_frame->EdgePixels_[lvl]){
+                Vec2 Puv_host = pixel->ReturnPixelPosition();
+                double depth_host = pixel->Depth_;
+                Vec3 Pxyz_host = CameraConfig_->pixel2camera(Puv_host,depth_host,lvl);
+                Vec3 Pxyz_target = CameraConfig_->camera2camera(Pxyz_host,initialize_pose);
+                Vec2 Puv_target = CameraConfig_->camera2pixel(Pxyz_target,lvl);
 
+                if(Utility::InBorder(Puv_target,CameraConfig_->SizeW_[lvl],CameraConfig_->SizeH_[lvl],CameraConfig_->ImageBound_) && Pxyz_target[2] > 0){
+                    int x = static_cast<int>(Puv_target[0]);
+                    int y = static_cast<int>(Puv_target[1]);
+                    Vec2 target_edge = target_frame->GetNearestEdge(x,y,lvl);
+                    Vec2 gradient = target_frame->GetGradient(Puv_target,lvl);
+
+                    if(gradient[0] == 0 && gradient[1] == 0) continue;
+
+                    Vec2 g = gradient.normalized();
+                    Vec2 error_Vec = Puv_target - target_edge;
+                    //double e = error_Vec.dot(error_Vec);
+                    double e = abs(error_Vec.dot(g));
+                    if(TrackConifg_->UseTrackFilter_ && e > TrackConifg_->TrackFilter_[lvl]){
+                        continue;
+                    }
+
+                    if(std::isnan(e)){
+                        LOG(ERROR) << "Bad info " << error_Vec.transpose() << "  " << CameraConfig_->SizeW_[lvl] << " " << CameraConfig_->SizeH_[lvl];
+                        exit(0);
+                    }
+                    error += e;
+                    ++good_num;
+                }
+            }
+        }
+        if(good_num == 0){
+            LOG(ERROR) << "Track no good edge !" << " host id: " << host_frame->Id_ << " target id: " << target_frame->Id_ << std::endl;
+            return MAXFLOAT;
+        }
+        return error / good_num;
+    }
+    Tracker::TrackerStatus Tracker::TrackNewestFrameUsingCeres(EdgeVO::Frame::Ptr &target_frame,
+                                                               const EdgeVO::Frame::Ptr &host_frame,
+                                                               SE3 &initialize_pose) {
         SE3 back_pose = initialize_pose;
         TrackerStatus trackStatus_final = TrackerStatus::Lost;
         TrackerStatus trackStatus;
+
+        //Debug(host_frame,target_frame,0);
 
         for(int lvl = TrackConifg_->PyramidLevel_ - 1;lvl >= 0;--lvl){
             if(host_frame->EdgePixels_[lvl].size() < TrackConifg_->TrackLeastNum_[lvl]){
@@ -244,9 +223,7 @@ namespace EdgeVO{
             }
 
             back_pose = initialize_pose;
-
-            trackStatus = TrackNewestFrameUsingLSDOnLvl(target_frame,host_frame,initialize_pose,lvl);
-
+            trackStatus = TrackNewestFrameUsingCeresOnLvl(target_frame,host_frame,initialize_pose,lvl);
             if(trackStatus != TrackerStatus::Ok){
                 initialize_pose = back_pose;
                 //LOG(WARNING) << "No improvement in ("<< target_frame->Id_  << "," << lvl << ")";
@@ -265,212 +242,116 @@ namespace EdgeVO{
         return trackStatus_final;
     }
 
-    Tracker::TrackerStatus Tracker::TrackNewestFrameUsingLSDOnLvl(EdgeVO::Frame::Ptr& target_frame,
-                                                                  const EdgeVO::Frame::Ptr& host_frame,
-                                                                  SE3 &initialize_pose, int lvl) {
-        lsd_slam::LGS6 ls;
-        if(host_frame->ReturnPixelSize() < 200){
-            LOG(ERROR) << "LOST because too few points" << std::endl;
-        }
-
-        /**optimzation*/
-        //std::cout << "ok" << std::endl;
-        auto lastError = TrackNewestError(target_frame,host_frame,initialize_pose,lvl);
-        //std::cout << "ok1" << std::endl;
-
-        auto error = lastError;
-        auto lambda = 0.0f;
-        TrackerStatus status = TrackerStatus ::Lost;
-        for(size_t iter = 0;iter < TrackConifg_->TrackIters_;++iter){
-            //std::cout << "ok here" << std::endl;
-
-            if(mBufferInfo_->GoodEdgesNum_ < 100){
-                LOG(ERROR) << "Lost because too few good points: " << mBufferInfo_->GoodEdgesNum_ << std::endl;
-                return TrackerStatus::Lost;
-            }
-
-            ComputeJacobianSSE(ls,lvl);
-            int incTry = 0;
-
-            while(true){
-                const Vec6 b = ls.b.cast<double>();
-                Mat66 A = ls.A.cast<double>();
-                for(size_t i = 0; i < 6; i++) A(i,i) *= 1+lambda;
-                const Vec6 inc = A.ldlt().solve(-b);
-
-                incTry++;
-                //Make sure that Eigen doesn't crash the program
-                if (!inc.allFinite()) return TrackerStatus::Lost;
-                SE3 T_t_h_new = SE3::exp(inc) * initialize_pose;
-                error = TrackNewestError(target_frame,host_frame,T_t_h_new,lvl);
-                //std::cout << "inc: " << inc.transpose() << " error: " << error << " lastError: " << lastError << std::endl;
-                if(error < lastError){
-                    initialize_pose = T_t_h_new;
-                    //std::cout  << "Increment accepted at iteration : "<<iter << " lambda: " << lambda << " error: " << error << " last error: " << lastError  << std::endl;
-                    status = TrackerStatus ::Ok;
-                    if(error / lastError > 0.999f){
-                        iter = TrackConifg_->TrackIters_;
-                    }
-                    lastError = error;
-                    lambda = (lambda <= 0.2f ? 0.0f : lambda*0.5f);
-                } else{
-                    if(!(inc.dot(inc) > 1e-16)){
-                        iter = TrackConifg_->TrackIters_;
-                        //std::cout << "StepSize too small" << std::endl;
-                        break;
-                    }
-                    lambda = (lambda < 0.001f ? 0.2f : lambda * (1 << incTry));
-                    //std::cout << "Increment NOT accepted at iteration : "<< iter << " lambda: " << lambda << std::endl;
-                }
-            }
-        }
-
-        return status;
-    }
-
-    void Tracker::ComputeJacobianSSE(lsd_slam::LGS6 &ls, int lvl) {
-        const __m128 fx = _mm_set1_ps(CameraConfig_->Fx_[lvl]);
-        const __m128 fy = _mm_set1_ps(CameraConfig_->Fy_[lvl]);
-
-
-        ls.initialize();
-        size_t idx = 0;
-/*
-        for(; idx < mBufferInfo_->GoodEdgesNum_; idx+=4)
-        {
-            const __m128 x = _mm_load_ps(buf_warped_x+idx);
-            const __m128 y = _mm_load_ps(buf_warped_y+idx);
-            // redefine pz
-            const __m128 depth = _mm_load_ps(buf_warped_depth+idx);
-            const __m128 dx = _mm_load_ps(buf_warped_dx+idx); //TODO: remove foxal length multi
-            const __m128 fxdx = _mm_mul_ps(fx,dx);
-            const __m128 J60 = _mm_div_ps(fxdx,depth); //id * dx * fx
-
-            const __m128 dy = _mm_load_ps(buf_warped_dy+idx);
-            const __m128 fydy = _mm_mul_ps(fy,dy);
-            const __m128 J61 = _mm_div_ps(fydy,depth); //iD*gy *fy
-
-            const __m128 fxdxx = _mm_mul_ps(fxdx,x); //fx*dx*x
-            const __m128 fydyy = _mm_mul_ps(fydy,y); //fy*dy*y
-            const __m128 dd = _mm_mul_ps(depth,depth);
-
-            //Note: _mm_xor_ps(vec, _mm_set1_ps(-0.f)) flips the singn
-            const __m128 J62 = _mm_div_ps(_mm_sub_ps(_mm_xor_ps(fxdxx, _mm_set1_ps(-0.f)),fydyy),dd);
-
-            const __m128 fydy_div_1_and_yydd = _mm_sub_ps(_mm_xor_ps(fydy, _mm_set1_ps(-0.f)),_mm_div_ps(_mm_mul_ps(fydyy,y),dd));
-            const __m128 J63 = _mm_sub_ps(fydy_div_1_and_yydd,_mm_div_ps(_mm_mul_ps(fxdxx,y),dd));
-
-            const __m128 fxdx_div_1_and_xxdd = _mm_add_ps(fxdx,_mm_div_ps(_mm_mul_ps(fxdxx,x),dd));
-            const __m128 J64 = _mm_add_ps(fxdx_div_1_and_xxdd,_mm_div_ps(_mm_mul_ps(fydyy,x),dd));
-
-            const __m128 J65 = _mm_sub_ps( _mm_div_ps(_mm_mul_ps(fydy,x),depth), _mm_div_ps(_mm_mul_ps(fxdx,y),depth));
-            ls.updateSSE(J60, J61, J62, J63, J64, J65, _mm_load_ps(buf_warped_residual +idx), _mm_load_ps(buf_warped_weight+idx));
-        }
-        */
-        // solve ls
-        const float fx_f = CameraConfig_->Fx_[lvl];
-        const float fy_f = CameraConfig_->Fy_[lvl];
-
-        for(;idx < mBufferInfo_->GoodEdgesNum_;++idx){
-
-            const float dx = buf_warped_dx[idx];
-            const float dy = buf_warped_dy[idx];
-            const float x =  buf_warped_x[idx];
-            const float y = buf_warped_y[idx];
-            const float z = buf_warped_depth[idx];
-
-            lsd_slam::Vector6 J;
-            J[0] = fx_f * dx / z;
-            J[1] = fy_f * dy / z;
-            J[2] = (-1 / (z * z)) * (fx_f * x * dx + fy_f * y * dy);
-            J[3] = -fx_f * dx * x * y / (z*z)  - fy_f * dy * (1 + (y*y) / (z*z));
-            J[4] = fx_f * dx * (1 + (x*x) / (z*z)) + fy_f * dy * (x*y)/(z*z);
-            J[5] = -dx * fx_f * y / z + fy_f * x * dy / z;
-            ls.update(J,buf_warped_residual[idx],buf_warped_weight[idx]);
-        }
-        ls.finish();
-    }
-
-
-    double Tracker::TrackNewestError(EdgeVO::Frame::Ptr &target_frame, const EdgeVO::Frame::Ptr &host_frame,
-                                     SE3 &initialize_pose, int lvl) {
-
-        Vec3* DTInfo_ = target_frame->PyramidDT_[lvl];
-
+    Tracker::TrackerStatus Tracker::TrackNewestFrameUsingCeresOnLvl(EdgeVO::Frame::Ptr &target_frame,
+                                                                    const EdgeVO::Frame::Ptr &host_frame,
+                                                                    SE3 &initialize_pose, int lvl) {
         mBufferInfo_->Reset();
+        double cost_before = TrackNearestError(target_frame,host_frame,initialize_pose);
 
-        std::vector<double> ErrorVec;
-        for(auto &pixel : host_frame->EdgePixels_[lvl]){
-            if(pixel->Depth_ < 0) continue;
+        ceres::Problem problem;
+        ceres::LossFunction* loss_function;
+        //loss_function = NULL;
+        loss_function = new ceres::CauchyLoss(1.0);
+        //loss_function = new ceres::HuberLoss(1.0);
+
+        se3_pose_vector = initialize_pose.log();
+        vector2double();
+
+        ceres::LocalParameterization *localParamter = new PoseLocalParameter();
+        problem.AddParameterBlock(se3_pose_double, 6, localParamter);
+
+        for(auto &pixel : host_frame->EdgePixels_[lvl]) {
             Vec2 Puv_host = pixel->ReturnPixelPosition();
             double depth_host = pixel->Depth_;
-            Vec3 Pxyz_host = CameraConfig_->pixel2camera(Puv_host,depth_host,lvl);
-            Vec3 Pxyz_target = CameraConfig_->camera2camera(Pxyz_host,initialize_pose);
-            Vec2 Puv_target = CameraConfig_->camera2pixel(Pxyz_target,lvl);
+            Vec3 Pxyz_host = CameraConfig_->pixel2camera(Puv_host, depth_host, lvl);
+            Vec3 Pxyz_target = CameraConfig_->camera2camera(Pxyz_host, initialize_pose);
+            Vec2 Puv_target = CameraConfig_->camera2pixel(Pxyz_target, lvl);
 
             if(Utility::InBorder(Puv_target,CameraConfig_->SizeW_[lvl],CameraConfig_->SizeH_[lvl],CameraConfig_->ImageBound_) && Pxyz_target[2] > 0) {
 
-                const auto dtInfo = InterpolateDTdxdy(Puv_target,DTInfo_,lvl);
-
-                double e = dtInfo[0];
-                float huber_weight = Utility::GetHuberWeight(e,TrackConifg_->TrackHuberWeright_);
-
-                float t_weight = Utility::GetTDistributionNewWeight(e);
-
-                if(std::isnan(dtInfo[0]) || std::isnan(dtInfo[1]) || std::isnan(dtInfo[2])){
-                    LOG(ERROR) << "Nan Data!";
-                    exit(0);
-                }
+                int x = static_cast<int>(Puv_target[0]);
+                int y = static_cast<int>(Puv_target[1]);
+                Vec2 target_edge = target_frame->GetNearestEdge(x,y,lvl);
+                double e = (Puv_target - target_edge).norm();
 
                 if(TrackConifg_->UseTrackFilter_ && e > TrackConifg_->TrackFilter_[lvl]){
+                    //std::cout << Puv_target.transpose() << " " << target_edge.transpose() << " " << Puv_host.transpose() << std::endl;
                     ++mBufferInfo_->BadEdgesNum_;
                     continue;
                 }
-                buf_warped_x[mBufferInfo_->GoodEdgesNum_] = static_cast<float>(Pxyz_target[0]);
-                buf_warped_y[mBufferInfo_->GoodEdgesNum_] = static_cast<float>(Pxyz_target[1]);
-                buf_warped_depth[mBufferInfo_->GoodEdgesNum_] = static_cast<float>(Pxyz_target[2]);
-                buf_warped_residual[mBufferInfo_->GoodEdgesNum_] = static_cast<float>(e);
-                buf_warped_dx[mBufferInfo_->GoodEdgesNum_] = static_cast<float>(dtInfo[1]);
-                buf_warped_dy[mBufferInfo_->GoodEdgesNum_] = static_cast<float>(dtInfo[2]);
-                buf_warped_weight[mBufferInfo_->GoodEdgesNum_] = static_cast<float>(t_weight);
-                mBufferInfo_->SumError_ = mBufferInfo_->SumError_ + e;
-                ErrorVec.push_back(e);
+
+                Vec2 gradient = target_frame->GetGradient(Puv_target,lvl);
+                if(gradient[0] == 0 && gradient[1] == 0) continue;
+                TrackCostFunction* trackcostfactor = new TrackCostFunction(Puv_host,gradient,depth_host,target_frame,CameraConfig_,lvl);
+                problem.AddResidualBlock(trackcostfactor,loss_function,se3_pose_double);
                 ++mBufferInfo_->GoodEdgesNum_;
             } else{
                 ++mBufferInfo_->BadEdgesNum_;
                 continue;
             }
-
         }
 
-        /*
-        if(mBufferInfo_->GoodEdgesNum_){
-            std::sort(ErrorVec.begin(),ErrorVec.end());
-            double mid_e = ErrorVec[static_cast<int>(mBufferInfo_->GoodEdgesNum_ / 2)];
-            std::vector<double> MADVec;
-            for(size_t i = 0;i<mBufferInfo_->GoodEdgesNum_;i++){
-                if(i < mBufferInfo_->GoodEdgesNum_ / 2)
-                    MADVec.push_back(mid_e - ErrorVec[i]);
-                else
-                    MADVec.push_back(ErrorVec[i] - mid_e);
-            }
-            std::sort(MADVec.begin(),MADVec.end());
-            double MAD_theta = MADVec[static_cast<int>(mBufferInfo_->GoodEdgesNum_ / 2)];
-            //std::cout << "MAD theta: " << MAD_theta << std::endl;
-            for(size_t i =0;i<mBufferInfo_->GoodEdgesNum_;++i){
-                buf_warped_weight[i] = Utility::GetTDistributionWeight(buf_warped_residual[i],1.4826 * MAD_theta);
-            }
-        }
-*/
-        if(mBufferInfo_->GoodEdgesNum_ != 0){
-            //std::cout << "Good num: " << mBufferInfo_->GoodEdgesNum_ << std::endl;
-            return mBufferInfo_->SumError_ / static_cast<float>(mBufferInfo_->GoodEdgesNum_);
-        }else{
-            //std::cout << "Fuck num: " << mBufferInfo_->GoodEdgesNum_ << std::endl;
-            return 99999;
+        ceres::Solver::Options options;
+        options.trust_region_strategy_type = ceres::DOGLEG;
+        //options.max_solver_time_in_seconds = 0.03;
+        ceres::Solver::Summary summary;
+        ceres::Solve(options, &problem, &summary);
+        std::cout << summary.BriefReport() << "\n";
+
+        double2vector();
+
+        initialize_pose = SE3::exp(se3_pose_vector);
+        double cost_after = TrackNearestError(target_frame,host_frame,initialize_pose);
+
+        if(cost_after < cost_before){
+            LOG(INFO) << "Good Id: "<< target_frame->Id_ << " host: " << host_frame->Id_ << " Num: " << mBufferInfo_->GoodEdgesNum_
+                      << " (Before,after) (" << cost_before << "," << cost_after << ")";
+            return TrackerStatus::Ok;
+        } else{
+            LOG(INFO) << "Id: "<< target_frame->Id_ << " host: " << host_frame->Id_ << " Num: " << mBufferInfo_->GoodEdgesNum_
+                      << " (Before,after) (" << cost_before << "," << cost_after << ")";
+            return TrackerStatus::Ok;
         }
     }
 
+    void Tracker::vector2double() {
+        se3_pose_double[0] = se3_pose_vector[0];
+        se3_pose_double[1] = se3_pose_vector[1];
+        se3_pose_double[2] = se3_pose_vector[2];
+        se3_pose_double[3] = se3_pose_vector[3];
+        se3_pose_double[4] = se3_pose_vector[4];
+        se3_pose_double[5] = se3_pose_vector[5];
+    }
+
+    void Tracker::double2vector() {
+        se3_pose_vector[0] = se3_pose_double[0];
+        se3_pose_vector[1] = se3_pose_double[1];
+        se3_pose_vector[2] = se3_pose_double[2];
+        se3_pose_vector[3] = se3_pose_double[3];
+        se3_pose_vector[4] = se3_pose_double[4];
+        se3_pose_vector[5] = se3_pose_double[5];
+    }
+
+    void Tracker::Debug(Frame::Ptr host,Frame::Ptr target,int lvl) {
+
+        cv::Mat rgb = target->RGBImgs_[lvl];
+        for(auto &pixel : host->EdgePixels_[lvl]) {
+            Vec2 Puv_host = pixel->ReturnPixelPosition();
+            double depth_host = pixel->Depth_;
+            Vec3 Pxyz_host = CameraConfig_->pixel2camera(Puv_host, depth_host, lvl);
+            Vec3 Pxyz_target = CameraConfig_->camera2camera(Pxyz_host, SE3());
+            Vec2 Puv_target = CameraConfig_->camera2pixel(Pxyz_target, lvl);
+
+            int x = static_cast<int>(Puv_target[0]);
+            int y = static_cast<int>(Puv_target[1]);
+            Vec2 target_edge = target->GetNearestEdge(x, y, lvl);
+            //cv::line(rgb,cv::Point(Puv_target[0],Puv_target[1]),cv::Point(target_edge[0],target_edge[1]),cv::Scalar(0,255,0));
+            cv::circle(rgb,cv::Point(Puv_target[0],Puv_target[1]),2,cv::Scalar(255,0,0));
+            cv::circle(rgb,cv::Point(target_edge[0],target_edge[1]),2,cv::Scalar(0,0,255));
+        }
+        cv::imshow("rgb",rgb);
+        cv::waitKey(0);
+    }
 
     std::vector<SE3> Tracker::TheLastTryPoses(std::vector<SE3> tryPoses) {
         std::vector<SE3> lastF_2_fh_tries;
@@ -513,14 +394,17 @@ namespace EdgeVO{
     Tracker::TrackerStatus Tracker::CheckTrackStatus(const EdgeVO::Frame::Ptr& target_frame, const EdgeVO::Frame::Ptr& host_frame,
 
                                                      const SE3 &initialize_pose, EdgeVO::Tracker::TrackerStatus status) {
-
+        if(status == Tracker::TrackerStatus::Lost){
+            LOG(INFO) << "No Update ";
+            return Tracker::TrackerStatus::Lost;
+        }
         return CheckKeyFrame(target_frame,host_frame,initialize_pose);
 }
 
     Tracker::TrackerStatus Tracker::CheckKeyFrame(const EdgeVO::Frame::Ptr& target_frame,const EdgeVO::Frame::Ptr& host_frame,
                                                   const SE3 &initialize_pose) {
 
-        double final_e = TrackAverageError(target_frame,host_frame,initialize_pose);
+        double final_e = ReprojectError(target_frame,host_frame,initialize_pose);;
         mDebuger_->AllAfterError_ += final_e;
         DebugError(final_e);
         if(final_e > TrackConifg_->TrackMaxError_){
@@ -528,44 +412,20 @@ namespace EdgeVO{
             mDebuger_->LostNumAfterCheck_++;
             return TrackerStatus ::Lost;
         }
-        /**
-         * 1.视差
-         * 2.图像的相似程度(直方图、特征点)
-         * 3.光流移动的大小
-        */
-        /**optical error*/
-        ReprojectError(target_frame,host_frame,initialize_pose);
-        double average_parallax_error = mBufferInfo_->ReprojectError_ / mBufferInfo_->GoodEdgesNum_;
-        double average_self_parallax_error = mBufferInfo_->ReprojectErrorSelf_ / mBufferInfo_->GoodEdgesNum_;
-
-        ///丰富纹理下，不靠谱，但是在弱纹理环境下比较靠谱
-        double average_dt_error = mBufferInfo_->DTError_ / mBufferInfo_->GoodEdgesNum_;
-        auto opticalThreshold = std::sqrt(average_parallax_error)*0.1 + std::sqrt(average_self_parallax_error)*0.15;
-        //std::cout << "optical: " << mBufferInfo_.ReprojectError_ << " " << mBufferInfo_.GoodEdgesNum_ << " " << average_parallax_error << std::endl;
-        /**帧之间的差距*/
-        int frame_count = target_frame->Id_ - host_frame->Id_;
 
         /**相似性*/
-
-        //|| average_dt_error > 2.0 || average_self_parallax_error > 10
-        if(average_parallax_error > TrackConifg_->TrackParallaxError_){
+        if(final_e > TrackConifg_->TrackParallaxError_){
             mDebuger_->KeyNum_++;
-            //cv::imshow("before",host_frame->RGBImgs_[0]);
-            //cv::imshow("after",target_frame->RGBImgs_[0]);
-            //cv::waitKey(100);
-            //std::cout << "KeyFrame id: " << target_frame->Id_ << " average_dt_error: " << average_dt_error << std::endl;
-            //std::cout << "KeyFrame id: " << target_frame->Id_ << " self_parallax_error: " << average_self_parallax_error << std::endl;
-            //LOG(INFO) << "KeyFrame id: " << target_frame->Id_ << " average error: " << average_parallax_error;
-            //std::cout << "optical error: " << opticalThreshold << std::endl;
+            LOG(INFO) << "New KeyFrame with " <<  final_e << " error " << " num: " << mBufferInfo_->GoodEdgesNum_;
             return TrackerStatus::NewKeyframe;
         }
 
         if(mBufferInfo_->GoodEdgesNum_ < mBufferInfo_->BadEdgesNum_ * 2) {
-            //LOG(INFO) << "KeyFrame for few good: " << "(g,b)  (" << mBufferInfo_->GoodEdgesNum_ << "," << mBufferInfo_->BadEdgesNum_ << ")";
+            LOG(INFO) << "KeyFrame for few good: " << "(g,b)  (" << mBufferInfo_->GoodEdgesNum_ << "," << mBufferInfo_->BadEdgesNum_ << ")";
             return TrackerStatus::NewKeyframe;
         }
         ++mDebuger_->GoodNum_;
-        //LOG(INFO) << "Just Ok! Id: " << target_frame->Id_;
+        LOG(INFO) << "Just Ok! Id: " << target_frame->Id_ << " with error: " << final_e << " num: " << mBufferInfo_->GoodEdgesNum_;
         return TrackerStatus ::Ok;
     }
 

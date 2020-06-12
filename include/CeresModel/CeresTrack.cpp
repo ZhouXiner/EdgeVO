@@ -3,8 +3,8 @@
 //
 #include "CeresTrack.h"
 
-namespace EDGEVO{
-    TrackCostFunction::TrackCostFunction(Vec2 point,double depth,EdgeVO::Frame::Ptr &frame, EdgeVO::CameraConfig::Ptr &camera, int lvl) {
+namespace EdgeVO{
+    TrackCostFunction::TrackCostFunction(Vec2 point,Vec2 gradient,double depth,EdgeVO::Frame::Ptr &frame, EdgeVO::CameraConfig::Ptr &camera, int lvl) {
         TargetFrame_ = frame;
         Camera_ = camera;
         fx_ = Camera_->Fx_[lvl];
@@ -13,12 +13,16 @@ namespace EDGEVO{
         cy_ = Camera_->Cy_[lvl];
         lvl_ = lvl;
         Puv_host_ = point;
+        gradient_ = gradient;
         depth_ = depth;
     }
 
     bool TrackCostFunction::Evaluate(double const *const *parameters, double *residuals, double **jacobians) const {
         Vec6 se3;
-        Vec2 target_edge;
+        Vec2 target_edge,error_Vec;
+        Vec2 g = gradient_.normalized();
+
+        double weight = 1.0;
         se3 << parameters[0][0],parameters[0][1],parameters[0][2],
                 parameters[0][3],parameters[0][4],parameters[0][5];
 
@@ -29,7 +33,7 @@ namespace EDGEVO{
 
         int x = static_cast<int>(Puv_target[0]);
         int y = static_cast<int>(Puv_target[1]);
-        if(!Utility::InBorder(x,y,Camera_->SizeW_[lvl_],Camera_->SizeH_[lvl_],Camera_->ImageBound_)){
+        if(!Utility::InBorder(x,y,Camera_->SizeW_[lvl_],Camera_->SizeH_[lvl_],Camera_->ImageBound_) || Pxyz_target[2] <= 0){
             if(jacobians) {
                 if (jacobians[0]) {
                     jacobians[0][0] = 0;
@@ -39,18 +43,49 @@ namespace EDGEVO{
                     jacobians[0][4] = 0;
                     jacobians[0][5] = 0;
                 }
-                residuals[0] = 0;
             }
-        }else{
-            Vec2 target_edge = GetNearestEdge(x,y);
+            residuals[0] = 0;
+        }else {
+            target_edge = GetNearestEdge(x, y);
+            //std::cout << "host: " << Puv_host_.transpose() << " target: " << target_edge.transpose() << std::endl;
             ///error的形式，是需要好好考虑的，直接采用两个点之间的欧氏距离还是多添加一些，需要测试
             ///先按照欧式距离测试
-            residuals[0] = (Puv_host_ - target_edge).norm();
+            //gradient_.normalized();
+            error_Vec = Puv_target - target_edge;
+
+            double dis_g = gradient_.norm();
+            //std::cout << "error: " << residuals[0] << " origin: " << dis_e << " near: " << dis_g << std::endl;
+            //residuals[0] = (Puv_target - target_edge).norm();
+            residuals[0] = pow(error_Vec.dot(g),2);
+            //residuals[0] = error_Vec.dot(error_Vec);
+            //std::cout << "error: " << residuals[0] << std::endl;
+            //residuals[0] = pow (error_Vec.dot(error_Vec),0.5);
+
+
+            double huber = 0.3;
+            if(residuals[0] >= huber){
+                weight = huber / residuals[0];
+                residuals[0] = weight * residuals[0];
+            }else{
+                weight = 1.0;
+            }
+
+
+/*
+            double v = 2.2875, theta = 1.1050;
+            weight = (v + 1) / (v + pow(residuals[0] / theta, 2));
+            residuals[0] = weight * residuals[0];
+*/
         }
+
         if(jacobians){
             Eigen::Matrix<double,1,2> jaco;
-            double dis = (Puv_host_ - target_edge).dot(Puv_host_ - target_edge);
-            jaco << (target_edge[0] - Puv_host_[0]) * pow(dis,-1/2),(target_edge[1] - Puv_host_[1]) * pow(dis,-1/2);
+            double dis = (error_Vec).dot(error_Vec);
+            double dis_g2 = gradient_.dot(gradient_);
+            //jaco << (target_edge[0] - Puv_target[0]) * pow(dis,-1/2) * weight,(target_edge[1] - Puv_target[1]) * pow(dis,-1/2) * weight;
+            //jaco << 2 * error_Vec[0] * weight,2 * error_Vec[1] * weight;
+            jaco << (2 * weight * g[0] * (error_Vec[0] * g[0] + error_Vec[1] * g[1])) / dis_g2,
+                    (2 * weight * g[1] * (error_Vec[0] * g[0] + error_Vec[1] * g[1])) / dis_g2;
             if(jacobians[0]){
                 Eigen::Map<Eigen::Matrix<double, 1, 6, Eigen::RowMajor>> jacobian_pose_0(jacobians[0]);
                 Eigen::Matrix<double,2,6> jaco_0;
@@ -60,6 +95,7 @@ namespace EDGEVO{
                 jaco_0 << fx_ / Pxyz_target[2], 0, -fx_ * Pxyz_target[0] / z_2,-fx_ * Pxyz_target[0] * Pxyz_target[1] / z_2,fx_ + fx_ * x_2 / z_2, -fx_ * Pxyz_target[1] / Pxyz_target[2],
                           0, fy_ / Pxyz_target[2], -fy_ * Pxyz_target[1] / z_2, -fy_ - fy_ * y_2 / z_2, fy_ * Pxyz_target[0] * Pxyz_target[1] / z_2, fy_ * Pxyz_target[0] / Pxyz_target[2];
                 jacobian_pose_0 = jaco * jaco_0;
+                //std::cout << "Jacobian: " << jacobian_pose_0 << std::endl;
             }
         }
         return true;
@@ -68,9 +104,10 @@ namespace EDGEVO{
     Vec2 TrackCostFunction::GetNearestEdge(int x, int y) const {
         Vec2 output;
         while(true){
-            const uint8_t last_x = TargetFrame_->LocationX_[lvl_].at<uint8_t>(y,x);
-            const uint8_t last_y = TargetFrame_->LocationX_[lvl_].at<uint8_t>(y,x);
-            if(last_x == x && last_y == y){
+            const int last_x = TargetFrame_->LocationX_[lvl_].at<int>(y,x);
+            const int last_y = TargetFrame_->LocationY_[lvl_].at<int>(y,x);
+
+            if(int(last_x) == x && int(last_y) == y){
                 output[0] = x;
                 output[1] = y;
                 return output;
