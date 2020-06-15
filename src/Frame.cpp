@@ -216,6 +216,7 @@ namespace EdgeVO{
             cv::imshow("DT_" + std::to_string(i),DTImgs_[i]);
         }
          */
+
         cv::Mat rgb = RGBImgs_[0];
         for(auto& pixel:EdgePixels_[0]){
             int x = pixel->Hostx_ + rand() % 100;
@@ -231,8 +232,10 @@ namespace EdgeVO{
             cv::circle(rgb,cv::Point(posi[0],posi[1]),1,cv::Scalar(0,255,0));
             cv::line(rgb,cv::Point(x,y),cv::Point(posi[0],posi[1]),cv::Scalar(255,0,0));
         }
+
+
         cv::resize(rgb,rgb,cv::Size(CameraConfig_->SizeW_[0]*2,CameraConfig_->SizeH_[0]*2));
-        cv::imshow("rgb",rgb);
+        cv::imshow("rgb" + std::to_string(Id_),rgb);
 
         //check the RGB Info
 /*

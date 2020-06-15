@@ -68,9 +68,8 @@ namespace EdgeVO{
         Tracker(const SystemConfig::Ptr system_config,const CameraConfig::Ptr camera_config);
         ~Tracker();
         TrackerStatus TrackNewestFrame(Frame::Ptr& target_frame,const Frame::Ptr& host_frame,std::vector<SE3>& initialize_pose,SE3& pose_final_change);
-
-        TrackerStatus TrackNewestFrameUsingCeres(Frame::Ptr& target_frame,const Frame::Ptr& host_frame,SE3& initialize_pose);
-        TrackerStatus TrackNewestFrameUsingCeresOnLvl(Frame::Ptr& target_frame,const Frame::Ptr& host_frame,SE3& initialize_pose,int lvl);
+        TrackerStatus TrackNewestFrameUsingLSD(Frame::Ptr& target_frame,const Frame::Ptr& host_frame,SE3& initialize_pose);
+        TrackerStatus TrackNewestFrameUsingLSDOnLvl(Frame::Ptr& target_frame,const Frame::Ptr& host_frame,SE3& initialize_pose,int lvl);
 
         TrackerStatus CheckTrackStatus(const Frame::Ptr& target_frame,const Frame::Ptr& host_frame,const SE3& initialize_pose,TrackerStatus status);
         TrackerStatus CheckKeyFrame(const Frame::Ptr& target_frame,const Frame::Ptr& host_frame,const SE3& initialize_pose);
@@ -79,14 +78,15 @@ namespace EdgeVO{
 
         double ReprojectError(const Frame::Ptr& target_frame,const Frame::Ptr& host_frame,const SE3& initialize_pose);
         double TrackNearestError(const Frame::Ptr& target_frame,const Frame::Ptr& host_frame,const SE3& initialize_pose);
+        double TrackNearestErrorOnlvl(const Frame::Ptr& target_frame,const Frame::Ptr& host_frame,const SE3& initialize_pose,int lvl);
+
+        double TrackNewestError(Frame::Ptr& target_frame,const Frame::Ptr& host_frame,SE3& initialize_pose,int lvl);
+        void ComputeJacobianSSE(lsd_slam::LGS6& ls,int lvl);
 
         double TrackAverageError(const Frame::Ptr& target_frame,const Frame::Ptr& host_frame,const SE3& initialize_pose);
         Vec3 InterpolateDTdxdy(const Vec2 Puv,const Vec3* DTInfo,int lvl);
         std::vector<SE3> TheLastTryPoses(std::vector<SE3> tryPoses);
         void DebugError(double e);
-
-        void vector2double();
-        void double2vector();
 
         void Debug(Frame::Ptr host,Frame::Ptr target,int lvl);
 

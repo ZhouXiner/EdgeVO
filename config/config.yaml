@@ -40,10 +40,10 @@ initialize_min_num : 5
 
 
 #Track info
-track_max_error_after_track : 20
+track_max_error_after_track : 15
 track_iters : 150
 track_solver_time : 0.005
-track_huber_weight : 0.3
+track_huber_weight : 1.5
 track_parallax_error : 10  #(threshold pixels)
 track_error_filter :
   lvl0 : 30

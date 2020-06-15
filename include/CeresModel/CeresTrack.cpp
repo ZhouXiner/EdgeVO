@@ -61,21 +61,26 @@ namespace EdgeVO{
             //std::cout << "error: " << residuals[0] << std::endl;
             //residuals[0] = pow (error_Vec.dot(error_Vec),0.5);
 
+            /*
+            double huber = 1.5;
+            double old_e = residuals[0];;
+            if(abs(residuals[0]) > huber){
+                weight = huber / abs(residuals[0]);
+                residuals[0] = weight * residuals[0];
+            }else{
+                weight = 1.0;
+            }
+             */
 
-            double huber = 0.3;
-            if(residuals[0] >= huber){
-                weight = huber / residuals[0];
+            double v = 2.2875, theta = 1.105;
+            if(residuals[0] > 1.5){
+                weight = (v + 1) / (v + pow(residuals[0] / theta, 2));
                 residuals[0] = weight * residuals[0];
             }else{
                 weight = 1.0;
             }
 
-
-/*
-            double v = 2.2875, theta = 1.1050;
-            weight = (v + 1) / (v + pow(residuals[0] / theta, 2));
-            residuals[0] = weight * residuals[0];
-*/
+            //std::cout << "old: " << old_e  << "        huber: " << weight << "       t: " << weights << std::endl;
         }
 
         if(jacobians){
@@ -95,7 +100,7 @@ namespace EdgeVO{
                 double z_2 = Pxyz_target[2] * Pxyz_target[2];
                 jaco_0 << fx_ / Pxyz_target[2], 0, -fx_ * Pxyz_target[0] / z_2,-fx_ * Pxyz_target[0] * Pxyz_target[1] / z_2,fx_ + fx_ * x_2 / z_2, -fx_ * Pxyz_target[1] / Pxyz_target[2],
                           0, fy_ / Pxyz_target[2], -fy_ * Pxyz_target[1] / z_2, -fy_ - fy_ * y_2 / z_2, fy_ * Pxyz_target[0] * Pxyz_target[1] / z_2, fy_ * Pxyz_target[0] / Pxyz_target[2];
-                jacobian_pose_0 = jaco * jaco_0;
+                jacobian_pose_0 = weight * jaco * jaco_0;
                 //std::cout << "Jacobian: " << jacobian_pose_0 << std::endl;
             }
         }
