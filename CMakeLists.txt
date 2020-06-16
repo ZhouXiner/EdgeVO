@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.2)
 project(EdgeVO)
 
 set(CMAKE_CXX_STANDARD 14)
-SET(CMAKE_BUILD_TYPE release)
+SET(CMAKE_BUILD_TYPE debug)
 SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb")
 SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 

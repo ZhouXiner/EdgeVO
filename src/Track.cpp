@@ -287,7 +287,11 @@ namespace EdgeVO{
             } else{
                 trackStatus_final = trackStatus;
             }
+            if(lvl == 0){
+                Debug(host_frame,target_frame,initialize_pose,lvl);
+            }
         }
+
 
         if(trackStatus_final == TrackerStatus::Lost){
             return TrackerStatus::Lost;
@@ -300,7 +304,6 @@ namespace EdgeVO{
         //    LOG(INFO) << "bading tracking final error: " << e;
         //    return TrackerStatus::Lost;
         //}
-
         return trackStatus_final;
     }
 
@@ -383,20 +386,22 @@ namespace EdgeVO{
             const float z = buf_warped_depth[idx];
 
             lsd_slam::Vector6 J;
-            /*
+
             J[0] = fx_f * dx / z;
             J[1] = fy_f * dy / z;
             J[2] = (-1 / (z * z)) * (fx_f * x * dx + fy_f * y * dy);
             J[3] = -fx_f * dx * x * y / (z*z)  - fy_f * dy * (1 + (y*y) / (z*z));
             J[4] = fx_f * dx * (1 + (x*x) / (z*z)) + fy_f * dy * (x*y)/(z*z);
             J[5] = -dx * fx_f * y / z + fy_f * x * dy / z;
-             */
+
+            /*
             J[0] = fx_f / z;
             J[1] = fy_f / z;
             J[2] = (-1 / (z * z)) * (fx_f * x + fy_f * y);
             J[3] = -fx_f * x * y / (z*z)  - fy_f * (1 + (y*y) / (z*z));
             J[4] = fx_f * (1 + (x*x) / (z*z)) + fy_f * (x*y)/(z*z);
             J[5] = -fx_f * y / z + fy_f * x / z;
+             */
             ls.update(J,buf_warped_residual[idx],buf_warped_weight[idx]);
         }
         ls.finish();
@@ -439,11 +444,17 @@ namespace EdgeVO{
 
                 Vec2 g = gradient.normalized();
                 Vec2 error_Vec = Puv_target - target_edge;
-                double e = error_Vec[0] + error_Vec[1];
+                double e = error_Vec.dot(g);
 
                 float huber_weight = Utility::GetHuberWeight(e,TrackConifg_->TrackHuberWeright_);
 
-                if(TrackConifg_->UseTrackFilter_ && e > TrackConifg_->TrackFilter_[lvl]){
+                double v = 2, theta = 1;
+
+                float weight = (v + 1) / (v + pow(e / theta, 2));
+
+                g = g;
+                int filter[3] = {5,7,10};
+                if(TrackConifg_->UseTrackFilter_ && e > filter[lvl]){
                     ++mBufferInfo_->BadEdgesNum_;
                     continue;
                 }
@@ -453,9 +464,8 @@ namespace EdgeVO{
                 buf_warped_residual[mBufferInfo_->GoodEdgesNum_] = static_cast<float>(e);
                 buf_warped_dx[mBufferInfo_->GoodEdgesNum_] = static_cast<float>(g[0]);
                 buf_warped_dy[mBufferInfo_->GoodEdgesNum_] = static_cast<float>(g[1]);
-                buf_warped_weight[mBufferInfo_->GoodEdgesNum_] = static_cast<float>(huber_weight);
-                mBufferInfo_->SumError_ = mBufferInfo_->SumError_ + e;
-                ErrorVec.push_back(e);
+                buf_warped_weight[mBufferInfo_->GoodEdgesNum_] = static_cast<float>(weight);
+                mBufferInfo_->SumError_ = mBufferInfo_->SumError_ + std::abs(e);
                 ++mBufferInfo_->GoodEdgesNum_;
             } else{
                 ++mBufferInfo_->BadEdgesNum_;
@@ -473,25 +483,33 @@ namespace EdgeVO{
         }
     }
 
-    void Tracker::Debug(Frame::Ptr host,Frame::Ptr target,int lvl) {
+    void Tracker::Debug(Frame::Ptr host,Frame::Ptr target,SE3 &pose,int lvl) {
 
         cv::Mat rgb = target->RGBImgs_[lvl];
+
         for(auto &pixel : host->EdgePixels_[lvl]) {
             Vec2 Puv_host = pixel->ReturnPixelPosition();
             double depth_host = pixel->Depth_;
             Vec3 Pxyz_host = CameraConfig_->pixel2camera(Puv_host, depth_host, lvl);
-            Vec3 Pxyz_target = CameraConfig_->camera2camera(Pxyz_host, SE3());
+            Vec3 Pxyz_target = CameraConfig_->camera2camera(Pxyz_host, pose);
             Vec2 Puv_target = CameraConfig_->camera2pixel(Pxyz_target, lvl);
 
-            int x = static_cast<int>(Puv_target[0]);
-            int y = static_cast<int>(Puv_target[1]);
-            Vec2 target_edge = target->GetNearestEdge(x, y, lvl);
-            //cv::line(rgb,cv::Point(Puv_target[0],Puv_target[1]),cv::Point(target_edge[0],target_edge[1]),cv::Scalar(0,255,0));
-            cv::circle(rgb,cv::Point(Puv_target[0],Puv_target[1]),2,cv::Scalar(255,0,0));
-            cv::circle(rgb,cv::Point(target_edge[0],target_edge[1]),2,cv::Scalar(0,0,255));
+            if(Utility::InBorder(Puv_target,CameraConfig_->SizeW_[lvl],CameraConfig_->SizeH_[lvl],CameraConfig_->ImageBound_)){
+                int x = static_cast<int>(Puv_target[0]);
+                int y = static_cast<int>(Puv_target[1]);
+                Vec2 target_edge = target->GetNearestEdge(x, y, lvl);
+                //cv::line(rgb,cv::Point(Puv_target[0],Puv_target[1]),cv::Point(target_edge[0],target_edge[1]),cv::Scalar(0,255,0));
+                cv::circle(rgb,cv::Point(Puv_target[0],Puv_target[1]),2,cv::Scalar(255,0,0));
+                //cv::circle(rgb,cv::Point(target_edge[0],target_edge[1]),2,cv::Scalar(0,0,255));
+            }
+
         }
-        cv::imshow("rgb",rgb);
-        cv::waitKey(0);
+        for(auto &pixel: target->EdgePixels_[lvl]){
+            cv::circle(rgb,cv::Point(pixel->Hostx_,pixel->Hosty_),2,cv::Scalar(0,255,0));
+        }
+
+        cv::imshow("rgb" + std::to_string(target->Id_),rgb);
+        cv::waitKey(10);
     }
 
     std::vector<SE3> Tracker::TheLastTryPoses(std::vector<SE3> tryPoses) {

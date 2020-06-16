@@ -88,7 +88,7 @@ namespace EdgeVO{
         std::vector<SE3> TheLastTryPoses(std::vector<SE3> tryPoses);
         void DebugError(double e);
 
-        void Debug(Frame::Ptr host,Frame::Ptr target,int lvl);
+        void Debug(Frame::Ptr host,Frame::Ptr target,SE3 &pose,int lvl);
 
         SystemConfig::Ptr TrackConifg_;
         CameraConfig::Ptr CameraConfig_;

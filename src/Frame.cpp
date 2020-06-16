@@ -86,11 +86,17 @@ namespace EdgeVO{
 
                     if(Utility::InBorder(col,row,CameraConfig_->SizeW_[lvl],CameraConfig_->SizeH_[lvl],1)){
                         /**sobel*/
-                        PyramidDTLvl[idx][1] = (-DTImgs_[lvl].at<float>(row - 1,col + 1) - 2*DTImgs_[lvl].at<float>(row ,col + 1) - DTImgs_[lvl].at<float>(row + 1,col + 1)
-                                + DTImgs_[lvl].at<float>(row - 1,col - 1) + 2*DTImgs_[lvl].at<float>(row,col - 1) + DTImgs_[lvl].at<float>(row + 1,col - 1)) / 8;
+                        //PyramidDTLvl[idx][1] = (-DTImgs_[lvl].at<float>(row - 1,col + 1) - 2*DTImgs_[lvl].at<float>(row ,col + 1) - DTImgs_[lvl].at<float>(row + 1,col + 1)
+                       //         + DTImgs_[lvl].at<float>(row - 1,col - 1) + 2*DTImgs_[lvl].at<float>(row,col - 1) + DTImgs_[lvl].at<float>(row + 1,col - 1)) / 8;
 
-                        PyramidDTLvl[idx][2] = (-DTImgs_[lvl].at<float>(row + 1,col - 1) - 2*DTImgs_[lvl].at<float>(row + 1,col) - DTImgs_[lvl].at<float>(row + 1,col + 1)
-                                             + DTImgs_[lvl].at<float>(row - 1,col - 1) + 2*DTImgs_[lvl].at<float>(row - 1,col) + DTImgs_[lvl].at<float>(row - 1,col + 1)) / 8;
+                        //PyramidDTLvl[idx][2] = (-DTImgs_[lvl].at<float>(row + 1,col - 1) - 2*DTImgs_[lvl].at<float>(row + 1,col) - DTImgs_[lvl].at<float>(row + 1,col + 1)
+                        //                     + DTImgs_[lvl].at<float>(row - 1,col - 1) + 2*DTImgs_[lvl].at<float>(row - 1,col) + DTImgs_[lvl].at<float>(row - 1,col + 1)) / 8;
+                        ///测试灰度梯度
+                        PyramidDTLvl[idx][1] = static_cast<float>((-GrayImgs_[lvl].at<uint8_t>(row - 1,col + 1) - 2*GrayImgs_[lvl].at<uint8_t>(row ,col + 1) - GrayImgs_[lvl].at<uint8_t>(row + 1,col + 1)
+                                                + GrayImgs_[lvl].at<uint8_t>(row - 1,col - 1) + 2*GrayImgs_[lvl].at<uint8_t>(row,col - 1) + GrayImgs_[lvl].at<uint8_t>(row + 1,col - 1)) / 8);
+
+                        PyramidDTLvl[idx][2] = static_cast<float>((-GrayImgs_[lvl].at<uint8_t>(row + 1,col - 1) - 2*GrayImgs_[lvl].at<uint8_t>(row + 1,col) - GrayImgs_[lvl].at<uint8_t>(row + 1,col + 1)
+                                                + GrayImgs_[lvl].at<uint8_t>(row - 1,col - 1) + 2*GrayImgs_[lvl].at<uint8_t>(row - 1,col) + GrayImgs_[lvl].at<uint8_t>(row - 1,col + 1)) / 8);
                     }
                 }
             }
