@@ -24,8 +24,8 @@ namespace EdgeVO{
         GetPyramidImgs(); /**Images Pyramid*/
         GetPyramidDTInfo(); /**Dt Info Pyramid*/
         GetEdgePixels(); /**EdgePixel Pyramid*/
-        GetLocation(); /**Get nearest edge*/
-        //DeBugImg();
+        GetNN(); /**Get nearest edge*/
+        DeBugImg();
     }
 
 
@@ -87,16 +87,17 @@ namespace EdgeVO{
                     if(Utility::InBorder(col,row,CameraConfig_->SizeW_[lvl],CameraConfig_->SizeH_[lvl],1)){
                         /**sobel*/
                         //PyramidDTLvl[idx][1] = (-DTImgs_[lvl].at<float>(row - 1,col + 1) - 2*DTImgs_[lvl].at<float>(row ,col + 1) - DTImgs_[lvl].at<float>(row + 1,col + 1)
-                       //         + DTImgs_[lvl].at<float>(row - 1,col - 1) + 2*DTImgs_[lvl].at<float>(row,col - 1) + DTImgs_[lvl].at<float>(row + 1,col - 1)) / 8;
+                        //        + DTImgs_[lvl].at<float>(row - 1,col - 1) + 2*DTImgs_[lvl].at<float>(row,col - 1) + DTImgs_[lvl].at<float>(row + 1,col - 1)) / 8;
 
                         //PyramidDTLvl[idx][2] = (-DTImgs_[lvl].at<float>(row + 1,col - 1) - 2*DTImgs_[lvl].at<float>(row + 1,col) - DTImgs_[lvl].at<float>(row + 1,col + 1)
                         //                     + DTImgs_[lvl].at<float>(row - 1,col - 1) + 2*DTImgs_[lvl].at<float>(row - 1,col) + DTImgs_[lvl].at<float>(row - 1,col + 1)) / 8;
                         ///测试灰度梯度
                         PyramidDTLvl[idx][1] = static_cast<float>((-GrayImgs_[lvl].at<uint8_t>(row - 1,col + 1) - 2*GrayImgs_[lvl].at<uint8_t>(row ,col + 1) - GrayImgs_[lvl].at<uint8_t>(row + 1,col + 1)
-                                                + GrayImgs_[lvl].at<uint8_t>(row - 1,col - 1) + 2*GrayImgs_[lvl].at<uint8_t>(row,col - 1) + GrayImgs_[lvl].at<uint8_t>(row + 1,col - 1)) / 8);
+                                                + GrayImgs_[lvl].at<uint8_t>(row - 1,col - 1) + 2*GrayImgs_[lvl].at<uint8_t>(row,col - 1) + GrayImgs_[lvl].at<uint8_t>(row + 1,col - 1)) / 8.0f);
 
-                        PyramidDTLvl[idx][2] = static_cast<float>((-GrayImgs_[lvl].at<uint8_t>(row + 1,col - 1) - 2*GrayImgs_[lvl].at<uint8_t>(row + 1,col) - GrayImgs_[lvl].at<uint8_t>(row + 1,col + 1)
-                                                + GrayImgs_[lvl].at<uint8_t>(row - 1,col - 1) + 2*GrayImgs_[lvl].at<uint8_t>(row - 1,col) + GrayImgs_[lvl].at<uint8_t>(row - 1,col + 1)) / 8);
+                        PyramidDTLvl[idx][2]  = static_cast<float>((-GrayImgs_[lvl].at<uint8_t>(row + 1,col - 1) - 2*GrayImgs_[lvl].at<uint8_t>(row + 1,col) - GrayImgs_[lvl].at<uint8_t>(row + 1,col + 1)
+                                                + GrayImgs_[lvl].at<uint8_t>(row - 1,col - 1) + 2*GrayImgs_[lvl].at<uint8_t>(row - 1,col) + GrayImgs_[lvl].at<uint8_t>(row - 1,col + 1)) / 8.0f);
+                        //std::cout << PyramidDTLvl[idx][1] << " " << PyramidDTLvl[idx][2] << std::endl;
                     }
                 }
             }
@@ -146,6 +147,114 @@ namespace EdgeVO{
         }
     }
 
+
+    void Frame::GetNN() {
+        for(size_t lvl = 0;lvl < CameraConfig_->PyramidLevel_;++lvl){
+            LocationX_.push_back(cv::Mat(CameraConfig_->SizeH_[lvl],CameraConfig_->SizeW_[lvl],CV_32SC1));
+            LocationY_.push_back(cv::Mat(CameraConfig_->SizeH_[lvl],CameraConfig_->SizeW_[lvl],CV_32SC1));
+        }
+
+        for(size_t lvl = 0;lvl < CameraConfig_->PyramidLevel_;++lvl) {
+            int Lvlw = CameraConfig_->SizeW_[lvl];
+            int Lvlh = CameraConfig_->SizeH_[lvl];
+            for(int col = 0;col < Lvlw;++col) {
+                for (int row = 0; row < Lvlh; ++row) {
+                    if(DTImgs_[lvl].at<float>(row,col) == 0){
+                        LocationX_[lvl].at<int>(row,col) = col;
+                        LocationY_[lvl].at<int>(row,col) = row;
+                        continue;
+                    }
+                    bool flag = false;
+                    int maskSize = 1;
+                    float min_dis = 999999;
+                    int minDTLocation[2] = {0};
+                    while(true){
+                        int x_min = std::max(0,col - maskSize);
+                        int x_max = std::min(col + maskSize,Lvlw-1);
+                        int y_min = std::max(0,row - maskSize);
+                        int y_max = std::min(row + maskSize,Lvlh-1);
+
+                        ///分为四部分
+                        for(int y=y_min;y<=y_max;++y){
+                            if(DTImgs_[lvl].at<float>(y,x_min) == 0){
+                                float dis = Utility::calcEuclideanDistance(x_min,y,col,row);
+                                if(dis < min_dis){
+                                    minDTLocation[0] = x_min;
+                                    minDTLocation[1] = y;
+                                    min_dis = dis;
+                                    flag = true;
+                                }
+                            }
+                        }
+                        if(min_dis == maskSize){
+                            LocationX_[lvl].at<int>(row,col) = minDTLocation[0];
+                            LocationY_[lvl].at<int>(row,col) = minDTLocation[1];
+                            break;
+                        }
+
+                        for(int y=y_min;y<=y_max;++y){
+                            if(DTImgs_[lvl].at<float>(y,x_max) == 0){
+                                float dis = Utility::calcEuclideanDistance(x_max,y,col,row);
+                                if(dis < min_dis){
+                                    minDTLocation[0] = x_max;
+                                    minDTLocation[1] = y;
+                                    min_dis = dis;
+                                    flag = true;
+                                }
+                            }
+                        }
+                        if(min_dis == maskSize){
+                            LocationX_[lvl].at<int>(row,col) = minDTLocation[0];
+                            LocationY_[lvl].at<int>(row,col) = minDTLocation[1];
+                            break;
+                        }
+
+                        for(int x = x_min;x<=x_max;++x){
+                            if(DTImgs_[lvl].at<float>(y_min,x) == 0){
+                                float dis = Utility::calcEuclideanDistance(x,y_min,col,row);
+                                if(dis < min_dis){
+                                    minDTLocation[0] = x;
+                                    minDTLocation[1] = y_min;
+                                    min_dis = dis;
+                                    flag = true;
+                                }
+                            }
+                        }
+                        if(min_dis == maskSize){
+                            LocationX_[lvl].at<int>(row,col) = minDTLocation[0];
+                            LocationY_[lvl].at<int>(row,col) = minDTLocation[1];
+                            break;
+                        }
+
+                        for(int x = x_min;x<=x_max;++x){
+                            if(DTImgs_[lvl].at<float>(y_max,x) == 0){
+                                float dis = Utility::calcEuclideanDistance(x,y_max,col,row);
+                                if(dis < min_dis){
+                                    minDTLocation[0] = x;
+                                    minDTLocation[1] = y_max;
+                                    min_dis = dis;
+                                    flag = true;
+                                }
+                            }
+                        }
+                        if(min_dis == maskSize){
+                            LocationX_[lvl].at<int>(row,col) = minDTLocation[0];
+                            LocationY_[lvl].at<int>(row,col) = minDTLocation[1];
+                            break;
+                        }
+
+                        if(flag){
+                            LocationX_[lvl].at<int>(row,col) = minDTLocation[0];
+                            LocationY_[lvl].at<int>(row,col) = minDTLocation[1];
+                            break;
+                        }
+                        ++maskSize;
+                    }
+                }
+            }
+        }
+
+    }
     void Frame::GetLocation() {
         for(size_t lvl = 0;lvl < CameraConfig_->PyramidLevel_;++lvl){
             LocationX_.push_back(cv::Mat(CameraConfig_->SizeH_[lvl],CameraConfig_->SizeW_[lvl],CV_32SC1));
@@ -224,24 +333,53 @@ namespace EdgeVO{
          */
 
         cv::Mat rgb = RGBImgs_[0];
+
         for(auto& pixel:EdgePixels_[0]){
             int x = pixel->Hostx_ + rand() % 100;
             int y = pixel->Hosty_ + rand() % 100;
-            Vec3 baseVec = PyramidDT_[0][x + int(y*CameraConfig_->SizeW_[0])];
-            if(x >= CameraConfig_->SizeW_[0] || y >= CameraConfig_->SizeH_[0]) continue;
+            //if(x < 350 || y > 300) continue;
+            //std::cout << "id: " << Id_ << std::endl;
+            //std::cout << x << " " << y << std::endl;
+            if(!Utility::InBorder(x,y,CameraConfig_->SizeW_[0],CameraConfig_->SizeH_[0],1)) continue;
+            cv::circle(rgb,cv::Point(x,y),1,cv::Scalar(0,0,255));
             //if(baseVec[1] == baseVec[2] == 0){
             //    cv::circle(rgb,cv::Point(x,y),1,cv::Scalar(0,0,255));
             //}
-            Vec2 posi = GetNearestEdge(x,y,0);
 
+            /*
+            Vec2 posi;
+            while(true){
+                const int last_x = LocationX_[0].at<int>(y,x);
+                const int last_y = LocationY_[0].at<int>(y,x);
+                //std::cout << last_x << " " << last_y << std::endl;
+                //if(flag) std::cout << last_x << " " << last_y << " " << DTImgs_[lvl].at<float>(last_y,last_x) << std::endl;
+                //std::cout << "next: " << int(last_x) << "x" << int(last_y) << std::endl;
+                if(int(last_x) == x && int(last_y) == y){
+                    posi[0] = x;
+                    posi[1] = y;
+                    //cv::circle(rgb,cv::Point(posi[0],posi[1]),1,cv::Scalar(255,0,0));
+                    //std::cout << "\n" << std::endl;
+                    break;
+                }else{
+                    //cv::circle(rgb,cv::Point(last_x,last_y),1,cv::Scalar(0,255,0));
+                    //cv::line(rgb,cv::Point(x,y),cv::Point(last_x,last_y),cv::Scalar(0,255,0));
+                    x = last_x;
+                    y = last_y;
+                }
+            }
+             */
+
+            Vec2 posi = GetNearestEdge(x,y,0);
+            //if(!Utility::InBorder(posi,CameraConfig_->SizeW_[0],CameraConfig_->SizeH_[0],1)) continue;
             cv::circle(rgb,cv::Point(x,y),1,cv::Scalar(0,0,255));
             cv::circle(rgb,cv::Point(posi[0],posi[1]),1,cv::Scalar(0,255,0));
             cv::line(rgb,cv::Point(x,y),cv::Point(posi[0],posi[1]),cv::Scalar(255,0,0));
         }
 
-
         cv::resize(rgb,rgb,cv::Size(CameraConfig_->SizeW_[0]*2,CameraConfig_->SizeH_[0]*2));
-        cv::imshow("rgb" + std::to_string(Id_),rgb);
+        //cv::imshow("rgb" + std::to_string(Id_),rgb);
+        std::string path = "/home/zhouxin/Desktop/NNImage/size1_step/";
+        cv::imwrite(path + "rgb" + std::to_string(Id_) + ".jpg",rgb);
 
         //check the RGB Info
 /*
@@ -292,7 +430,7 @@ namespace EdgeVO{
             cv::imshow("RGB_" + std::to_string(lvl),rgd_img);
         }
 */
-        cv::waitKey(0);
+        //cv::waitKey(1);
 
     }
 

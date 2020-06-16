@@ -24,11 +24,13 @@ namespace EdgeVO{
         void GetPyramidDTInfo(); /**For each DT Image, get the (dt,gredient_x,gredient_y)*/
         void GetEdgePixels();
         void GetLocation();
+        void GetNN();
         void GetEdge(cv::Mat& EdgeImg,const cv::Mat &GrayImg);
         void GetDT(cv::Mat& DTImg,const cv::Mat &EdgeImg);
 
         Vec2 GetGradient(const Vec2& p,int lvl);
         Vec2 GetNearestEdge(int x,int y,int lvl);
+
 
         void DeBugImg();
 

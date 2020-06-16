@@ -37,6 +37,11 @@ public:
                 && static_cast<int>(p[1]) >= bound && static_cast<int>(p[1]) <= (h - bound - 1));
     }
 
+    static float calcEuclideanDistance(int x1, int y1, int x2, int y2)
+    {
+        return sqrt(float((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2)));
+    }
+
     static bool InBorder(int u,int v,int w,int h,int bound){
         return (static_cast<int>(u) >= bound && static_cast<int>(u) <= (w - bound - 1)
                && static_cast<int>(v) >= bound && static_cast<int>(v) <= (h - bound - 1));

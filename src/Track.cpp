@@ -288,7 +288,7 @@ namespace EdgeVO{
                 trackStatus_final = trackStatus;
             }
             if(lvl == 0){
-                Debug(host_frame,target_frame,initialize_pose,lvl);
+                //Debug(host_frame,target_frame,initialize_pose,lvl);
             }
         }
 
@@ -432,6 +432,7 @@ namespace EdgeVO{
                 if(!Utility::InBorder(target_edge,CameraConfig_->SizeW_[lvl],CameraConfig_->SizeH_[lvl],CameraConfig_->ImageBound_)){
                     continue;
                 }
+
                 /*
                 if(track_mask.at<int>(y,x) == 0){
                     track_mask.at<int>(y,x) = 1;
@@ -440,16 +441,16 @@ namespace EdgeVO{
                 }
                  */
 
+
                 Vec2 gradient = target_frame->GetGradient(target_edge,lvl);
 
                 Vec2 g = gradient.normalized();
                 Vec2 error_Vec = Puv_target - target_edge;
                 double e = error_Vec.dot(g);
 
-                float huber_weight = Utility::GetHuberWeight(e,TrackConifg_->TrackHuberWeright_);
+                //float huber_weight = Utility::GetHuberWeight(e,TrackConifg_->TrackHuberWeright_);
 
                 double v = 2, theta = 1;
-
                 float weight = (v + 1) / (v + pow(e / theta, 2));
 
                 g = g;
