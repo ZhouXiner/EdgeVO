@@ -20,7 +20,7 @@ public:
 
     static double GetHuberWeight(double e, double huber) {
         //return (e<=huber ? 1 : pow(huber / e,2));
-        return (abs(e)<=huber ? 1 : huber / abs(e));
+        return (e<=huber ? 1 : huber / e);
 
     }
     static double GetTDistributionWeight(double e, double theta) {

@@ -7,6 +7,7 @@
 #include <ceres/ceres.h>
 #include <cmath>
 #include <set>
+#include <iomanip>
 
 #include "../Utils/LGSX.h"
 #include "../Utils/Utility.h"

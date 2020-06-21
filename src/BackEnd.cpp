@@ -53,7 +53,7 @@ namespace EdgeVO{
             TryPose.push_back(pose_b1_b2 * pose_b1_kf);
             TryPose.push_back(SE3::exp(pose_b1_b2.log() * 0.5)*pose_b1_kf);
             TryPose.push_back(pose_b1_b2 * pose_b1_b2 * pose_b1_kf);
-
+            TryPose.push_back(pose_b1_b2 * pose_b1_b2 * pose_b1_b2 * pose_b1_kf);
         }
         return TryPose;
     }

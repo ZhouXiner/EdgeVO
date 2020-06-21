@@ -24,8 +24,14 @@ namespace EdgeVO{
         GetPyramidImgs(); /**Images Pyramid*/
         GetPyramidDTInfo(); /**Dt Info Pyramid*/
         GetEdgePixels(); /**EdgePixel Pyramid*/
-        GetNN(); /**Get nearest edge*/
-        DeBugImg();
+        //GetNN(); /**Get nearest edge*/
+        auto t1=std::chrono::steady_clock::now();
+        //GetLocation();
+        GetNN();
+        auto t2=std::chrono::steady_clock::now();
+        double dr_ms=std::chrono::duration<double,std::milli>(t2-t1).count();
+        std::cout << "NN cost: " << dr_ms << "in Id: " << Id_ << std::endl;
+        //DeBugImg();
     }
 
 
@@ -87,16 +93,16 @@ namespace EdgeVO{
                     if(Utility::InBorder(col,row,CameraConfig_->SizeW_[lvl],CameraConfig_->SizeH_[lvl],1)){
                         /**sobel*/
                         //PyramidDTLvl[idx][1] = (-DTImgs_[lvl].at<float>(row - 1,col + 1) - 2*DTImgs_[lvl].at<float>(row ,col + 1) - DTImgs_[lvl].at<float>(row + 1,col + 1)
-                        //        + DTImgs_[lvl].at<float>(row - 1,col - 1) + 2*DTImgs_[lvl].at<float>(row,col - 1) + DTImgs_[lvl].at<float>(row + 1,col - 1)) / 8;
+                        //        + DTImgs_[lvl].at<float>(row - 1,col - 1) + 2*DTImgs_[lvl].at<float>(row,col - 1) + DTImgs_[lvl].at<float>(row + 1,col - 1)) / 8.0f;
 
                         //PyramidDTLvl[idx][2] = (-DTImgs_[lvl].at<float>(row + 1,col - 1) - 2*DTImgs_[lvl].at<float>(row + 1,col) - DTImgs_[lvl].at<float>(row + 1,col + 1)
-                        //                     + DTImgs_[lvl].at<float>(row - 1,col - 1) + 2*DTImgs_[lvl].at<float>(row - 1,col) + DTImgs_[lvl].at<float>(row - 1,col + 1)) / 8;
+                        //                     + DTImgs_[lvl].at<float>(row - 1,col - 1) + 2*DTImgs_[lvl].at<float>(row - 1,col) + DTImgs_[lvl].at<float>(row - 1,col + 1)) / 8.0f;
                         ///测试灰度梯度
                         PyramidDTLvl[idx][1] = static_cast<float>((-GrayImgs_[lvl].at<uint8_t>(row - 1,col + 1) - 2*GrayImgs_[lvl].at<uint8_t>(row ,col + 1) - GrayImgs_[lvl].at<uint8_t>(row + 1,col + 1)
-                                                + GrayImgs_[lvl].at<uint8_t>(row - 1,col - 1) + 2*GrayImgs_[lvl].at<uint8_t>(row,col - 1) + GrayImgs_[lvl].at<uint8_t>(row + 1,col - 1)) / 8.0f);
+                                                + GrayImgs_[lvl].at<uint8_t>(row - 1,col - 1) + 2*GrayImgs_[lvl].at<uint8_t>(row,col - 1) + GrayImgs_[lvl].at<uint8_t>(row + 1,col - 1)));
 
                         PyramidDTLvl[idx][2]  = static_cast<float>((-GrayImgs_[lvl].at<uint8_t>(row + 1,col - 1) - 2*GrayImgs_[lvl].at<uint8_t>(row + 1,col) - GrayImgs_[lvl].at<uint8_t>(row + 1,col + 1)
-                                                + GrayImgs_[lvl].at<uint8_t>(row - 1,col - 1) + 2*GrayImgs_[lvl].at<uint8_t>(row - 1,col) + GrayImgs_[lvl].at<uint8_t>(row - 1,col + 1)) / 8.0f);
+                                               + GrayImgs_[lvl].at<uint8_t>(row - 1,col - 1) + 2*GrayImgs_[lvl].at<uint8_t>(row - 1,col) + GrayImgs_[lvl].at<uint8_t>(row - 1,col + 1)));
                         //std::cout << PyramidDTLvl[idx][1] << " " << PyramidDTLvl[idx][2] << std::endl;
                     }
                 }
@@ -299,18 +305,18 @@ namespace EdgeVO{
         //bool flag = (x == 38 && y == 480) ? true : false;
         //std::cout << "Start: " << x << "x" << y << std::endl;
         while(true){
-            const int last_x = LocationX_[lvl].at<int>(y,x);
-            const int last_y = LocationY_[lvl].at<int>(y,x);
+            const int next_x = LocationX_[lvl].at<int>(y,x);
+            const int next_y = LocationY_[lvl].at<int>(y,x);
             //if(flag) std::cout << last_x << " " << last_y << " " << DTImgs_[lvl].at<float>(last_y,last_x) << std::endl;
             //std::cout << "next: " << int(last_x) << "x" << int(last_y) << std::endl;
-            if(int(last_x) == x && int(last_y) == y){
+            if(int(next_x) == x && int(next_y) == y){
                 output[0] = x;
                 output[1] = y;
                 //std::cout << "\n" << std::endl;
                 return output;
             }else{
-                x = last_x;
-                y = last_y;
+                x = next_x;
+                y = next_y;
             }
         }
     }
